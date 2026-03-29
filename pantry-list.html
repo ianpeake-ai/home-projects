@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>South Acre Pantry Top-Up</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --parchment: #f5f0e8;
+    --ink: #2c2416;
+    --warm-mid: #8b6f47;
+    --accent: #5c3d1e;
+    --rule: #d4c4a8;
+    --check-bg: #ede8dc;
+    --warning: #8b3a1e;
+    --section-bg: #ede5d4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--parchment);
+    color: var(--ink);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  header {
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 1.2rem;
+    margin-bottom: 2rem;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.01em;
+  }
+
+  header p {
+    color: var(--warm-mid);
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+  }
+
+  .controls {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  button {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.5rem 1.1rem;
+    border: 1.5px solid var(--accent);
+    border-radius: 3px;
+    background: transparent;
+    color: var(--accent);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  button:hover {
+    background: var(--accent);
+    color: var(--parchment);
+  }
+
+  button.primary {
+    background: var(--accent);
+    color: var(--parchment);
+  }
+
+  button.primary:hover {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+
+  .progress-bar {
+    background: var(--rule);
+    border-radius: 2px;
+    height: 5px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+    width: 0%;
+  }
+
+  .progress-label {
+    font-size: 0.8rem;
+    color: var(--warm-mid);
+    margin-bottom: 0.4rem;
+  }
+
+  section {
+    margin-bottom: 2.5rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    background: var(--section-bg);
+    border-left: 4px solid var(--accent);
+    padding: 0.6rem 0.9rem;
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+  }
+
+  .section-meta {
+    font-size: 0.8rem;
+    color: var(--warm-mid);
+  }
+
+  .subsection {
+    margin-bottom: 1.2rem;
+    padding-left: 0.5rem;
+  }
+
+  .subsection h3 {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--warm-mid);
+    margin-bottom: 0.4rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  ul {
+    list-style: none;
+  }
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    padding: 0.3rem 0.4rem;
+    border-radius: 3px;
+    transition: background 0.1s;
+    cursor: pointer;
+  }
+
+  li:hover {
+    background: var(--check-bg);
+  }
+
+  li.checked {
+    opacity: 0.45;
+  }
+
+  li.checked .item-text {
+    text-decoration: line-through;
+    color: var(--warm-mid);
+  }
+
+  .checkbox {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    border: 1.5px solid var(--warm-mid);
+    border-radius: 2px;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, border-color 0.15s;
+  }
+
+  li.checked .checkbox {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  li.checked .checkbox::after {
+    content: '✓';
+    color: var(--parchment);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .item-text {
+    flex: 1;
+    font-size: 0.93rem;
+  }
+
+  .qty {
+    font-size: 0.78rem;
+    color: var(--warm-mid);
+    background: var(--check-bg);
+    padding: 1px 6px;
+    border-radius: 2px;
+    white-space: nowrap;
+    margin-top: 2px;
+    font-weight: 600;
+  }
+
+  .warn {
+    font-size: 0.72rem;
+    color: var(--warning);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+    white-space: nowrap;
+  }
+
+  .section-body {
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px dashed var(--rule);
+    margin: 1.5rem 0;
+  }
+
+  footer {
+    font-size: 0.8rem;
+    color: var(--warm-mid);
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  @media print {
+    body { padding: 0; background: white; }
+    .controls, button { display: none; }
+    .progress-bar, .progress-label { display: none; }
+    li { break-inside: avoid; }
+    section { break-inside: avoid; }
+    li.checked { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <h1>South Acre — Pantry Top-Up</h1>
+    <p>Sainsbury's order · March 2026 · Flexitarian · Crisis-aware stocking</p>
+  </header>
+
+  <div class="controls">
+    <button class="primary" onclick="window.print()">🖨 Print / Save PDF</button>
+    <button onclick="checkAll()">Check All</button>
+    <button onclick="uncheckAll()">Reset</button>
+    <button onclick="hideChecked()">Hide Done</button>
+  </div>
+
+  <p class="progress-label" id="progress-label">0 of 0 items ticked</p>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+
+  <!-- SECTION 1 -->
+  <section>
+    <div class="section-header" onclick="toggleSection(this)">
+      <h2>1 — Grains, Pasta & Lentils</h2>
+      <span class="section-meta">▾</span>
+    </div>
+    <div class="section-body">
+      <ul>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Basmati rice 2kg</span><span class="qty">× 2</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Arborio risotto rice</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Dried spaghetti</span><span class="qty">× 2</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Dried penne</span><span class="qty">× 2</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Dried rigatoni</span><span class="qty">× 2</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Dried egg noodles</span><span class="qty">× 2</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Pearl barley</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Red split lentils</span><span class="qty">× 2</span><span class="warn">⚠ prioritise</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Green / puy lentils (dried)</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Rolled oats (large bag)</span><span class="qty">× 2</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section>
+    <div class="section-header" onclick="toggleSection(this)">
+      <h2>2 — Flour, Baking & Sugar</h2>
+      <span class="section-meta">▾</span>
+    </div>
+    <div class="section-body">
+      <ul>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Plain flour 1.5kg</span><span class="qty">× 2</span><span class="warn">⚠ prioritise</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Strong bread flour 1.5kg</span><span class="qty">× 1</span><span class="warn">⚠ prioritise</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Self-raising flour</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Fast-action dried yeast (multipack)</span><span class="qty">× 2</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Bicarbonate of soda</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Baking powder</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Caster sugar</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Soft brown sugar</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Icing sugar</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Dark chocolate 100g (baking)</span><span class="qty">× 2</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Cocoa powder</span><span class="qty">× 1</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section>
+    <div class="section-header" onclick="toggleSection(this)">
+      <h2>3 — Oils, Vinegars & Condiments</h2>
+      <span class="section-meta">▾</span>
+    </div>
+    <div class="section-body">
+      <ul>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Olive oil (large bottle)</span><span class="qty">× 2</span><span class="warn">⚠ prioritise</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Sunflower / vegetable oil (large)</span><span class="qty">× 1</span><span class="warn">⚠ prioritise</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Red wine vinegar</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">White wine vinegar</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Balsamic vinegar</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Soy sauce (large)</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Fish sauce</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Worcestershire sauce</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Dijon mustard</span><span class="qty">× 2</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Marmite</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Honey (large jar)</span><span class="qty">× 1</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section>
+    <div class="section-header" onclick="toggleSection(this)">
+      <h2>4 — Herbs, Spices & Stock</h2>
+      <span class="section-meta">▾</span>
+    </div>
+    <div class="section-body">
+      <ul>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Cumin seeds</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Ground cumin</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Smoked paprika</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Sweet paprika</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Turmeric</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Ground coriander</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Chilli flakes</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Ground cinnamon</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Bay leaves</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Dried thyme</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Dried oregano</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Black peppercorns (refill)</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Sea salt (large)</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Vegetable stock cubes</span><span class="qty">× 2 packs</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section>
+    <div class="section-header" onclick="toggleSection(this)">
+      <h2>5 — Nuts, Seeds & Dried Fruit</h2>
+      <span class="section-meta">▾</span>
+    </div>
+    <div class="section-body">
+      <ul>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Cashews 500g</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Walnuts</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Flaked almonds</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Whole almonds</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Sunflower seeds</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Pumpkin seeds</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Sultanas</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Dried apricots</span><span class="qty">× 1</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SECTION 6 -->
+  <section>
+    <div class="section-header" onclick="toggleSection(this)">
+      <h2>6 — Tinned Tomatoes & Veg</h2>
+      <span class="section-meta">▾</span>
+    </div>
+    <div class="section-body">
+      <ul>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Chopped tomatoes</span><span class="qty">× 6</span><span class="warn">⚠ prioritise</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Whole plum tomatoes</span><span class="qty">× 4</span><span class="warn">⚠ prioritise</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Tomato purée (tubes)</span><span class="qty">× 3</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Passata (carton or bottle)</span><span class="qty">× 4</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Tinned sweetcorn</span><span class="qty">× 3</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Tinned artichoke hearts</span><span class="qty">× 2</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Roasted red peppers (jar)</span><span class="qty">× 2</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Olives (jar)</span><span class="qty">× 2</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Capers</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Sundried tomatoes in oil</span><span class="qty">× 2</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SECTION 7 -->
+  <section>
+    <div class="section-header" onclick="toggleSection(this)">
+      <h2>7 — Tinned Pulses & Beans</h2>
+      <span class="section-meta">▾</span>
+    </div>
+    <div class="section-body">
+      <ul>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Chickpeas</span><span class="qty">× 4</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Cannellini beans</span><span class="qty">× 3</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Butter beans</span><span class="qty">× 3</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Black beans</span><span class="qty">× 2</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Kidney beans</span><span class="qty">× 3</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Green lentils (tinned)</span><span class="qty">× 2</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Borlotti beans</span><span class="qty">× 2</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SECTION 8 -->
+  <section>
+    <div class="section-header" onclick="toggleSection(this)">
+      <h2>8 — Tinned Fish & Coconut</h2>
+      <span class="section-meta">▾</span>
+    </div>
+    <div class="section-body">
+      <ul>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Sardines in olive oil</span><span class="qty">× 4</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Tinned mackerel</span><span class="qty">× 4</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Tuna in spring water</span><span class="qty">× 4</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Anchovies</span><span class="qty">× 2</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Coconut milk</span><span class="qty">× 4</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Coconut cream (full-fat)</span><span class="qty">× 2</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Bottled lemon juice (cooking)</span><span class="qty">× 1</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SECTION 9 -->
+  <section>
+    <div class="section-header" onclick="toggleSection(this)">
+      <h2>9 — Laundry & Cleaning</h2>
+      <span class="section-meta">▾</span>
+    </div>
+    <div class="section-body">
+      <div class="subsection">
+        <h3>Laundry</h3>
+        <ul>
+          <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Biological washing liquid / powder (large)</span><span class="qty">× 1</span></li>
+          <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Non-bio (if needed)</span><span class="qty">× 1</span></li>
+          <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Fabric conditioner</span><span class="qty">× 1</span></li>
+          <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Laundry sanitiser</span><span class="qty">× 1</span></li>
+        </ul>
+      </div>
+      <div class="subsection">
+        <h3>Surfaces & Kitchen</h3>
+        <ul>
+          <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Multi-surface spray</span><span class="qty">× 2</span></li>
+          <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Washing-up liquid (large)</span><span class="qty">× 2</span></li>
+          <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Dishwasher tablets (large box)</span><span class="qty">× 1</span></li>
+          <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Dishwasher salt</span><span class="qty">× 1</span></li>
+          <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Dishwasher rinse aid</span><span class="qty">× 1</span></li>
+          <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Oven cleaner</span><span class="qty">× 1</span></li>
+        </ul>
+      </div>
+      <div class="subsection">
+        <h3>Bathroom & Other</h3>
+        <ul>
+          <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Bathroom cleaner</span><span class="qty">× 1</span></li>
+          <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Bleach</span><span class="qty">× 2</span></li>
+          <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Limescale remover</span><span class="qty">× 1</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 10 -->
+  <section>
+    <div class="section-header" onclick="toggleSection(this)">
+      <h2>10 — Paper, Disposables & Misc</h2>
+      <span class="section-meta">▾</span>
+    </div>
+    <div class="section-body">
+      <ul>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Toilet rolls (large pack)</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Kitchen roll (multipack)</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Bin bags — general</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Bin bags — recycling</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Freezer bags (assorted sizes)</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Matches</span><span class="qty">× 2 boxes</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Household candles (plain)</span><span class="qty">× 1 pack</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Batteries AA (multipack)</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Batteries AAA (multipack)</span><span class="qty">× 1</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Paracetamol</span><span class="qty">× 2</span></li>
+        <li onclick="toggle(this)"><div class="checkbox"></div><span class="item-text">Ibuprofen</span><span class="qty">× 1</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    South Acre · March 2026 · ⚠ = supply chain / price-rise priority items
+  </footer>
+
+</div>
+
+<script>
+  function toggle(li) {
+    li.classList.toggle('checked');
+    updateProgress();
+  }
+
+  function toggleSection(header) {
+    const body = header.nextElementSibling;
+    const meta = header.querySelector('.section-meta');
+    if (body.style.maxHeight && body.style.maxHeight !== '0px') {
+      body.style.maxHeight = '0px';
+      meta.textContent = '▸';
+    } else {
+      body.style.maxHeight = body.scrollHeight + 'px';
+      meta.textContent = '▾';
+    }
+  }
+
+  function checkAll() {
+    document.querySelectorAll('li').forEach(li => li.classList.add('checked'));
+    updateProgress();
+  }
+
+  function uncheckAll() {
+    document.querySelectorAll('li').forEach(li => li.classList.remove('checked'));
+    document.querySelectorAll('li').forEach(li => li.style.display = '');
+    updateProgress();
+  }
+
+  function hideChecked() {
+    document.querySelectorAll('li.checked').forEach(li => li.style.display = 'none');
+  }
+
+  function updateProgress() {
+    const all = document.querySelectorAll('li').length;
+    const done = document.querySelectorAll('li.checked').length;
+    const pct = all > 0 ? (done / all) * 100 : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = `${done} of ${all} items ticked`;
+  }
+
+  // Initialise all sections open
+  document.querySelectorAll('.section-body').forEach(body => {
+    body.style.maxHeight = body.scrollHeight + 'px';
+  });
+
+  updateProgress();
+</script>
+</body>
+</html>
