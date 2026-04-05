@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>The Great South Acre Egg Hunt 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #2d5016;
+    --green-mid: #4a7c28;
+    --green-light: #7db348;
+    --green-pale: #c5e1a5;
+    --green-whisper: #e8f5e9;
+    --cream: #fefef6;
+    --chocolate: #5d3a1a;
+    --chocolate-light: #8b5e3c;
+    --gold: #d4a843;
+    --gold-light: #f0d48a;
+    --pink: #f8c8c8;
+    --egg-blue: #b3d9e8;
+    --egg-lilac: #d4c4e0;
+    --egg-yellow: #f9e8a0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Crimson Text', Georgia, serif;
+    background: var(--green-whisper);
+    color: var(--green-deep);
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  /* --- COVER PAGE --- */
+  .cover {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, var(--green-deep) 0%, var(--green-mid) 40%, var(--green-light) 100%);
+    cursor: pointer;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    overflow: hidden;
+  }
+
+  .cover.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(1.05);
+  }
+
+  .cover-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.07;
+    background-image:
+      radial-gradient(ellipse 20px 26px at 15% 20%, var(--cream) 48%, transparent 50%),
+      radial-gradient(ellipse 14px 18px at 45% 60%, var(--cream) 48%, transparent 50%),
+      radial-gradient(ellipse 18px 24px at 75% 30%, var(--cream) 48%, transparent 50%),
+      radial-gradient(ellipse 16px 20px at 30% 80%, var(--cream) 48%, transparent 50%),
+      radial-gradient(ellipse 22px 28px at 85% 75%, var(--cream) 48%, transparent 50%),
+      radial-gradient(ellipse 12px 16px at 60% 15%, var(--cream) 48%, transparent 50%),
+      radial-gradient(ellipse 20px 26px at 10% 55%, var(--cream) 48%, transparent 50%);
+  }
+
+  .cover-bunny {
+    font-size: 80px;
+    margin-bottom: 20px;
+    animation: bunnyBounce 2s ease-in-out infinite;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+  }
+
+  @keyframes bunnyBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+
+  .cover h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(1.6rem, 5vw, 2.8rem);
+    color: var(--cream);
+    text-align: center;
+    line-height: 1.3;
+    padding: 0 30px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  .cover h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .cover-subtitle {
+    font-family: 'Crimson Text', serif;
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    color: var(--green-pale);
+    margin-top: 12px;
+    font-style: italic;
+  }
+
+  .cover-tap {
+    margin-top: 40px;
+    font-size: 0.95rem;
+    color: var(--green-pale);
+    opacity: 0.8;
+    animation: pulse 2s ease-in-out infinite;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: 'Crimson Text', serif;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  /* --- floating eggs on cover --- */
+  .floating-egg {
+    position: absolute;
+    width: 30px;
+    height: 38px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    opacity: 0.15;
+    animation: floatEgg linear infinite;
+  }
+
+  @keyframes floatEgg {
+    0% { transform: translateY(110vh) rotate(0deg); }
+    100% { transform: translateY(-20vh) rotate(360deg); }
+  }
+
+  /* --- CAROUSEL --- */
+  .carousel-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    background: var(--green-whisper);
+  }
+
+  .carousel-track {
+    display: flex;
+    height: 100%;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+  }
+
+  .carousel-track.dragging {
+    transition: none;
+  }
+
+  .slide {
+    min-width: 100vw;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 24px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+  }
+
+  .slide-inner {
+    max-width: 480px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 40px;
+  }
+
+  /* --- slide header --- */
+  .clue-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--green-mid);
+    margin-top: 10px;
+    margin-bottom: 4px;
+  }
+
+  .clue-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.3rem, 4.5vw, 1.8rem);
+    color: var(--green-deep);
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  /* --- egg illustration between number and verse --- */
+  .clue-egg {
+    font-size: 48px;
+    margin: 16px 0 20px 0;
+    filter: drop-shadow(0 2px 6px rgba(45, 80, 22, 0.15));
+    animation: eggWobble 3s ease-in-out infinite;
+  }
+
+  @keyframes eggWobble {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+  }
+
+  /* --- clue verse --- */
+  .clue-verse {
+    background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(232,245,233,0.9));
+    border: 2px solid var(--green-pale);
+    border-radius: 16px;
+    padding: 24px 20px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 2px 12px rgba(45, 80, 22, 0.08);
+  }
+
+  .clue-verse::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 30px;
+    right: 30px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--green-light), transparent);
+    border-radius: 2px;
+  }
+
+  .clue-verse p {
+    font-family: 'Crimson Text', Georgia, serif;
+    font-size: clamp(1.05rem, 3.5vw, 1.25rem);
+    font-style: italic;
+    line-height: 1.7;
+    color: var(--green-deep);
+    text-align: center;
+  }
+
+  /* --- decorative elements per slide --- */
+  .slide-deco {
+    position: absolute;
+    font-size: 28px;
+    opacity: 0.12;
+    pointer-events: none;
+  }
+
+  .slide-deco.tl { top: 60px; left: 16px; }
+  .slide-deco.tr { top: 80px; right: 16px; }
+  .slide-deco.bl { bottom: 90px; left: 20px; }
+  .slide-deco.br { bottom: 70px; right: 20px; }
+
+  /* --- navigation --- */
+  .nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: linear-gradient(0deg, var(--green-deep) 0%, rgba(45, 80, 22, 0.95) 100%);
+    z-index: 50;
+    backdrop-filter: blur(10px);
+  }
+
+  .nav-btn {
+    background: none;
+    border: 2px solid var(--green-pale);
+    color: var(--green-pale);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-family: system-ui;
+  }
+
+  .nav-btn:active {
+    background: var(--green-pale);
+    color: var(--green-deep);
+    transform: scale(0.95);
+  }
+
+  .nav-btn:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+
+  .nav-dots {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .nav-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green-light);
+    opacity: 0.4;
+    transition: all 0.3s ease;
+  }
+
+  .nav-dot.active {
+    opacity: 1;
+    background: var(--gold-light);
+    transform: scale(1.3);
+    box-shadow: 0 0 6px var(--gold);
+  }
+
+  .nav-counter {
+    color: var(--green-pale);
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 60px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* --- grass footer decoration --- */
+  .grass-footer {
+    position: fixed;
+    bottom: 56px;
+    left: 0;
+    right: 0;
+    height: 20px;
+    z-index: 49;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .grass-footer svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* --- slide entry animations --- */
+  .slide-inner {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s;
+  }
+
+  .slide.active .slide-inner {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* --- FINALE SLIDE --- */
+  .finale {
+    background: linear-gradient(160deg, var(--green-deep) 0%, var(--green-mid) 50%, var(--green-light) 100%);
+    justify-content: center;
+    text-align: center;
+    color: var(--cream);
+  }
+
+  .finale .slide-inner {
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 100px;
+  }
+
+  .finale-bunny {
+    font-size: 64px;
+    margin-bottom: 20px;
+    animation: bunnyBounce 2s ease-in-out infinite;
+  }
+
+  .finale h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+
+  .finale p {
+    font-family: 'Crimson Text', serif;
+    font-size: 1.1rem;
+    color: var(--green-pale);
+    font-style: italic;
+  }
+
+  .finale-eggs {
+    margin-top: 24px;
+    font-size: 28px;
+    letter-spacing: 8px;
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  .finale-credit {
+    margin-top: 30px;
+    font-size: 0.8rem;
+    color: var(--green-pale);
+    opacity: 0.5;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover" id="cover" onclick="startHunt()">
+  <div class="cover-pattern"></div>
+
+  <!-- floating eggs -->
+  <div class="floating-egg" style="left:10%; background:var(--pink); animation-duration:12s; animation-delay:0s;"></div>
+  <div class="floating-egg" style="left:30%; background:var(--egg-blue); animation-duration:15s; animation-delay:2s;"></div>
+  <div class="floating-egg" style="left:55%; background:var(--egg-yellow); animation-duration:11s; animation-delay:4s;"></div>
+  <div class="floating-egg" style="left:78%; background:var(--egg-lilac); animation-duration:14s; animation-delay:1s;"></div>
+  <div class="floating-egg" style="left:90%; background:var(--gold-light); animation-duration:13s; animation-delay:3s;"></div>
+
+  <div class="cover-bunny">🐰</div>
+  <h1>The Great <em>South Acre</em><br>Egg Hunt</h1>
+  <div class="cover-subtitle">Easter 2026</div>
+  <div class="cover-tap">tap to begin</div>
+</div>
+
+<!-- CAROUSEL -->
+<div class="carousel-container" id="carouselContainer">
+  <div class="carousel-track" id="track">
+
+    <!-- SLIDE 1 -->
+    <div class="slide" data-slide="0">
+      <div class="slide-inner">
+        <div class="clue-number">Clue 1 of 10</div>
+        <div class="clue-egg">🥚</div>
+        <div class="clue-verse">
+          <p>Where cushions sleep through winter's rain<br>
+          And charcoal dreams of flame again,<br>
+          A dark box sits on mossy boards—<br>
+          Lift the lid for springtime's rewards.</p>
+        </div>
+      </div>
+      <span class="slide-deco tl">🌿</span>
+      <span class="slide-deco br">🍫</span>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide" data-slide="1">
+      <div class="slide-inner">
+        <div class="clue-number">Clue 2 of 10</div>
+        <div class="clue-egg">🐰</div>
+        <div class="clue-verse">
+          <p>It keeps the house warm, green and stout,<br>
+          On timber legs it lounges out.<br>
+          Don't mind the gravel, crouch down low—<br>
+          Beneath this belly, treasures grow.</p>
+        </div>
+      </div>
+      <span class="slide-deco tr">🥚</span>
+      <span class="slide-deco bl">🌱</span>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide" data-slide="2">
+      <div class="slide-inner">
+        <div class="clue-number">Clue 3 of 10</div>
+        <div class="clue-egg">🍫</div>
+        <div class="clue-verse">
+          <p>Where split logs stack like stories told,<br>
+          And bark keeps secrets from the cold,<br>
+          Go out to where the night garden grows—<br>
+          Tuck your hand where the kindling knows.</p>
+        </div>
+      </div>
+      <span class="slide-deco tl">🪵</span>
+      <span class="slide-deco br">🐰</span>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide" data-slide="3">
+      <div class="slide-inner">
+        <div class="clue-number">Clue 4 of 10</div>
+        <div class="clue-egg">🐢</div>
+        <div class="clue-verse">
+          <p>A reptile made of stone, not speed,<br>
+          Guards a hollow no one needs—<br>
+          Among daffodils and old wood-rot,<br>
+          Eric's marking your chocolate spot.</p>
+        </div>
+      </div>
+      <span class="slide-deco tr">🐢</span>
+      <span class="slide-deco bl">🌼</span>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="slide" data-slide="4">
+      <div class="slide-inner">
+        <div class="clue-number">Clue 5 of 10</div>
+        <div class="clue-egg">🍂</div>
+        <div class="clue-verse">
+          <p>Two old friends sleep beneath this tree,<br>
+          The roots now shield what used to be.<br>
+          Where copper leaves still cling and clutch,<br>
+          Reach into the fork — don't think too much.</p>
+        </div>
+      </div>
+      <span class="slide-deco tl">🍂</span>
+      <span class="slide-deco br">🥚</span>
+    </div>
+
+    <!-- SLIDE 6 -->
+    <div class="slide" data-slide="5">
+      <div class="slide-inner">
+        <div class="clue-number">Clue 6 of 10</div>
+        <div class="clue-egg">🐔</div>
+        <div class="clue-verse">
+          <p>A green machine for hens-to-be,<br>
+          Still waiting like a promise, see?<br>
+          No clucking yet, no feathered fuss—<br>
+          Easter got here before them. Plus:<br>
+          Check underneath, beside the hedge,<br>
+          Your treat is waiting on the ledge.</p>
+        </div>
+      </div>
+      <span class="slide-deco tr">🐔</span>
+      <span class="slide-deco bl">🍫</span>
+    </div>
+
+    <!-- SLIDE 7 -->
+    <div class="slide" data-slide="6">
+      <div class="slide-inner">
+        <div class="clue-number">Clue 7 of 10</div>
+        <div class="clue-egg">🦆</div>
+        <div class="clue-verse">
+          <p>Not sweets — although they look the part —<br>
+          This tub of grubs won't win your heart.<br>
+          The ducks think it's a five-star meal,<br>
+          Beneath the worms there's more appeal.</p>
+        </div>
+      </div>
+      <span class="slide-deco tl">🦆</span>
+      <span class="slide-deco br">🐛</span>
+    </div>
+
+    <!-- SLIDE 8 -->
+    <div class="slide" data-slide="7">
+      <div class="slide-inner">
+        <div class="clue-number">Clue 8 of 10</div>
+        <div class="clue-egg">🐝</div>
+        <div class="clue-verse">
+          <p>A Knight of nature, old and wise,<br>
+          Has lent his name to buzzing skies.<br>
+          No bees have moved in — not just yet —<br>
+          But underneath, a sweeter bet.<br>
+          Kneel by Sir David, Easter bound,<br>
+          Your chocolate waits upon the ground.</p>
+        </div>
+      </div>
+      <span class="slide-deco tr">🐝</span>
+      <span class="slide-deco bl">🍯</span>
+    </div>
+
+    <!-- SLIDE 9 -->
+    <div class="slide" data-slide="8">
+      <div class="slide-inner">
+        <div class="clue-number">Clue 9 of 10</div>
+        <div class="clue-egg">🕊️</div>
+        <div class="clue-verse">
+          <p>In the shed where canes and hoses lean,<br>
+          A mud-cup waits for wings unseen.<br>
+          The swallows haven't come back yet—<br>
+          But something's nesting there, I bet.<br>
+          Look up. Look close. Don't miss this one.<br>
+          Spring's already half-begun.</p>
+        </div>
+      </div>
+      <span class="slide-deco tl">🕊️</span>
+      <span class="slide-deco br">🥚</span>
+    </div>
+
+    <!-- SLIDE 10 -->
+    <div class="slide" data-slide="9">
+      <div class="slide-inner">
+        <div class="clue-number">Clue 10 of 10</div>
+        <div class="clue-egg">💚</div>
+        <div class="clue-verse">
+          <p>The last one hides where summer swings,<br>
+          Where hammock ropes and birdsong clings.<br>
+          A birch has grown a heart of wood—<br>
+          Reach inside. You knew you would.<br>
+          The hunt is done. The chocolate's yours.<br>
+          Happy Easter, boo. Now come indoors.</p>
+        </div>
+      </div>
+      <span class="slide-deco tr">💚</span>
+      <span class="slide-deco bl">🐰</span>
+    </div>
+
+    <!-- FINALE -->
+    <div class="slide finale" data-slide="10">
+      <div class="slide-inner">
+        <div class="finale-bunny">🐰</div>
+        <h2>Happy Easter, Pete</h2>
+        <p>from South Acre, with love</p>
+        <div class="finale-eggs">🥚🍫🥚🍫🥚</div>
+        <div class="finale-credit">The Great South Acre Egg Hunt · Easter 2026</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- GRASS -->
+<div class="grass-footer">
+  <svg viewBox="0 0 400 20" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,20 L0,12 Q10,6 20,12 Q30,4 40,10 Q50,6 60,12 Q70,2 80,10 Q90,8 100,12 Q110,4 120,10 Q130,6 140,12 Q150,3 160,10 Q170,7 180,12 Q190,5 200,10 Q210,8 220,12 Q230,3 240,10 Q250,6 260,12 Q270,4 280,10 Q290,7 300,12 Q310,5 320,10 Q330,8 340,12 Q350,4 360,10 Q370,6 380,12 Q390,8 400,10 L400,20 Z" fill="#2d5016"/>
+  </svg>
+</div>
+
+<!-- NAV -->
+<nav class="nav-bar" id="navBar" style="display:none;">
+  <button class="nav-btn" id="prevBtn" onclick="goTo(current-1)" aria-label="Previous">‹</button>
+  <div class="nav-dots" id="navDots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="goTo(current+1)" aria-label="Next">›</button>
+</nav>
+
+<script>
+  const track = document.getElementById('track');
+  const slides = document.querySelectorAll('.slide');
+  const totalSlides = slides.length; // 11 including finale
+  let current = 0;
+
+  // Build nav dots
+  const dotsContainer = document.getElementById('navDots');
+  for (let i = 0; i < totalSlides; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => goTo(i);
+    dotsContainer.appendChild(dot);
+  }
+
+  function updateSlide() {
+    track.style.transform = `translateX(-${current * 100}vw)`;
+
+    // Update dots
+    document.querySelectorAll('.nav-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+
+    // Update buttons
+    document.getElementById('prevBtn').disabled = current === 0;
+    document.getElementById('nextBtn').disabled = current === totalSlides - 1;
+
+    // Activate slide animation
+    slides.forEach((s, i) => {
+      s.classList.toggle('active', i === current);
+    });
+  }
+
+  function goTo(index) {
+    if (index < 0 || index >= totalSlides) return;
+    current = index;
+    updateSlide();
+  }
+
+  function startHunt() {
+    document.getElementById('cover').classList.add('hidden');
+    document.getElementById('navBar').style.display = 'flex';
+    slides[0].classList.add('active');
+  }
+
+  // Touch/swipe handling
+  let startX = 0;
+  let startY = 0;
+  let isDragging = false;
+  let diff = 0;
+
+  track.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    isDragging = true;
+    track.classList.add('dragging');
+  }, { passive: true });
+
+  track.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    const x = e.touches[0].clientX;
+    const y = e.touches[0].clientY;
+
+    // If scrolling more vertically, let it scroll
+    if (Math.abs(y - startY) > Math.abs(x - startX)) {
+      isDragging = false;
+      track.classList.remove('dragging');
+      return;
+    }
+
+    diff = x - startX;
+    const offset = -(current * window.innerWidth) + diff;
+    track.style.transform = `translateX(${offset}px)`;
+  }, { passive: true });
+
+  track.addEventListener('touchend', () => {
+    track.classList.remove('dragging');
+    if (!isDragging) { diff = 0; return; }
+    isDragging = false;
+
+    const threshold = window.innerWidth * 0.2;
+    if (diff < -threshold && current < totalSlides - 1) {
+      current++;
+    } else if (diff > threshold && current > 0) {
+      current--;
+    }
+    diff = 0;
+    updateSlide();
+  });
+
+  // Keyboard nav
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(current + 1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goTo(current - 1);
+  });
+</script>
+
+</body>
+</html>
