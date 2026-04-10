@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>South Acre — Side Hustle Plan</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+
+  :root {
+    --ink: #1c1710;
+    --parchment: #f6f0e4;
+    --parchment-mid: #ede3cc;
+    --parchment-dark: #d9ccb0;
+    --gold: #9a7c2e;
+    --gold-light: #b8962e;
+    --gold-dim: #6b5520;
+    --stone: #7a6a58;
+    --stone-light: #a89880;
+    --moss: #4a5a3a;
+    --moss-light: #6a7a58;
+    --crimson: #7a2020;
+    --done: #4a5a3a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--parchment);
+    color: var(--ink);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+  }
+
+  header {
+    text-align: center;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--parchment-dark);
+    margin-bottom: 2.5rem;
+  }
+
+  .header-eyebrow {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--stone);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+    margin-bottom: 0.4rem;
+  }
+
+  .header-sub {
+    color: var(--stone);
+    font-style: italic;
+    font-size: 1rem;
+  }
+
+  /* Progress bar */
+  .progress-bar-wrap {
+    margin: 1.5rem 0 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .progress-bar {
+    width: 220px;
+    height: 4px;
+    background: var(--parchment-dark);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--moss);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  .progress-label {
+    font-size: 0.85rem;
+    color: var(--stone);
+    font-style: italic;
+  }
+
+  /* Phase labels */
+  .phase-header {
+    margin: 2.5rem 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .phase-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    white-space: nowrap;
+  }
+
+  .phase-line {
+    flex: 1;
+    height: 1px;
+    background: var(--parchment-dark);
+  }
+
+  .phase-subtitle {
+    font-style: italic;
+    color: var(--stone);
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  /* Week block */
+  .week {
+    border: 1px solid var(--parchment-dark);
+    border-radius: 3px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    background: rgba(255,255,255,0.3);
+  }
+
+  .week-toggle {
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.9rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: left;
+    transition: background 0.2s;
+  }
+
+  .week-toggle:hover { background: rgba(154,124,46,0.05); }
+
+  .week-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    min-width: 60px;
+  }
+
+  .week-title {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+    flex: 1;
+  }
+
+  .week-meta {
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--stone-light);
+  }
+
+  .week-done-count {
+    font-size: 0.78rem;
+    color: var(--stone);
+    margin-right: 0.5rem;
+    font-style: italic;
+  }
+
+  .week-arrow {
+    color: var(--stone-light);
+    font-size: 0.7rem;
+    transition: transform 0.3s;
+  }
+
+  .week.open .week-arrow { transform: rotate(180deg); }
+
+  .week-body {
+    display: none;
+    border-top: 1px solid var(--parchment-dark);
+    padding: 0.25rem 0;
+  }
+
+  .week.open .week-body { display: block; }
+
+  /* Day rows */
+  .day-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    padding: 0.55rem 1.2rem 0.55rem 1rem;
+    border-bottom: 1px solid rgba(217,204,176,0.4);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .day-row:last-child { border-bottom: none; }
+  .day-row:hover { background: rgba(154,124,46,0.04); }
+
+  .day-row.done {
+    opacity: 0.5;
+  }
+
+  .day-row.done .task-text {
+    text-decoration: line-through;
+    color: var(--stone);
+  }
+
+  .day-check {
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid var(--parchment-dark);
+    border-radius: 2px;
+    margin-top: 3px;
+    margin-right: 0.85rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    background: white;
+  }
+
+  .day-row.done .day-check {
+    background: var(--moss);
+    border-color: var(--moss);
+  }
+
+  .day-check::after {
+    content: '';
+    width: 8px;
+    height: 5px;
+    border-left: 1.5px solid white;
+    border-bottom: 1.5px solid white;
+    transform: rotate(-45deg) translateY(-1px);
+    display: none;
+  }
+
+  .day-row.done .day-check::after { display: block; }
+
+  .day-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--stone-light);
+    min-width: 38px;
+    margin-right: 0.85rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .task-content { flex: 1; }
+
+  .task-text {
+    font-size: 0.97rem;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+
+  .task-stream {
+    display: inline-block;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.1rem 0.45rem;
+    border-radius: 2px;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+    font-family: 'Crimson Pro', serif;
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .stream-writing { background: rgba(122,32,32,0.1); color: var(--crimson); }
+  .stream-ccc { background: rgba(154,124,46,0.12); color: var(--gold-dim); }
+  .stream-consult { background: rgba(74,90,58,0.12); color: var(--moss); }
+  .stream-infra { background: rgba(122,106,88,0.12); color: var(--stone); }
+  .stream-book { background: rgba(28,23,16,0.08); color: var(--ink); }
+  .stream-land { background: rgba(74,90,58,0.08); color: var(--moss-light); }
+
+  .task-note {
+    font-size: 0.84rem;
+    color: var(--stone);
+    font-style: italic;
+    margin-top: 0.15rem;
+    line-height: 1.4;
+  }
+
+  /* Stream legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    padding: 1rem 1.2rem;
+    background: rgba(255,255,255,0.4);
+    border: 1px solid var(--parchment-dark);
+    border-radius: 3px;
+  }
+
+  .legend-title {
+    width: 100%;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 0.25rem;
+  }
+
+  /* Reset button */
+  .reset-btn {
+    background: none;
+    border: 1px solid var(--parchment-dark);
+    color: var(--stone);
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 1rem;
+    display: block;
+    margin-left: auto;
+  }
+
+  .reset-btn:hover { border-color: var(--crimson); color: var(--crimson); }
+
+  footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--parchment-dark);
+    font-style: italic;
+    color: var(--stone-light);
+    font-size: 0.9rem;
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+<header>
+  <div class="header-eyebrow">South Acre — a plan in three phases</div>
+  <h1>The Work Alongside the Work</h1>
+  <div class="header-sub">One hour a day. Twelve weeks. Five income streams.</div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="progress-label" id="progressLabel">0 of 60 tasks done</div>
+  </div>
+</header>
+
+<div class="legend">
+  <div class="legend-title">Streams</div>
+  <span class="task-stream stream-writing">Writing</span>
+  <span class="task-stream stream-ccc">Charged Consultation</span>
+  <span class="task-stream stream-consult">Consultancy</span>
+  <span class="task-stream stream-infra">Infrastructure</span>
+  <span class="task-stream stream-book">Book</span>
+  <span class="task-stream stream-land">Land</span>
+</div>
+
+<div id="plan"></div>
+
+<button class="reset-btn" onclick="resetAll()">Reset all progress</button>
+
+<footer>Make jam for the winter and pavlova for now.</footer>
+
+</div>
+
+<script>
+const PLAN = [
+  {
+    phase: "Phase One — Foundation",
+    phaseNote: "Weeks 1–4 · Set up, pitch, test",
+    weeks: [
+      {
+        num: "Week 1",
+        title: "Infrastructure & first pitch",
+        days: [
+          { day: "Mon", task: "Write a 150-word professional bio foregrounding addiction medicine + AI + writing. Not your NHS bio — a bio that makes someone want to hire or commission you. This is raw material for everything.", stream: "infra" },
+          { day: "Tue", task: "Update LinkedIn: add BJGP Life publication, add Charged Consultation under Featured, rewrite headline to reflect your actual profile.", stream: "infra" },
+          { day: "Wed", task: "Build a target list: 8 outlets for clinical writing commissions. For each — editor name, submission guidelines, typical fee, one recent relevant piece. A simple notes doc is fine.", stream: "writing", note: "Targets: Drug & Alcohol Findings, Aeon, The Lancet Psychiatry, Addiction journal, Scottish Government policy briefings, BJGP, Prospect, The Guardian Long Read." },
+          { day: "Thu", task: "Write your first pitch. One paragraph hook, one paragraph credentials, one paragraph piece outline. Pitch to your highest-value target. Don't overthink it — send it Friday.", stream: "writing" },
+          { day: "Fri", task: "Send the pitch. Then: register with NICE as an expert advisor (online form, ~20 minutes). Write down the URL so you don't lose it.", stream: "writing,infra" }
+        ]
+      },
+      {
+        num: "Week 2",
+        title: "Charged Consultation audit + CPD pipeline",
+        days: [
+          { day: "Mon", task: "Write a plain-language brief for the Charged Consultation: what it is, who it's for, what problem it solves, what format it currently exists in. One page. This is your product brief.", stream: "ccc" },
+          { day: "Tue", task: "Research NHS Education for Scotland (NES): find the addiction/primary care CPD commissioners. Get names, emails, and recent commissioned programmes.", stream: "ccc" },
+          { day: "Wed", task: "Write a one-page CPD offer sheet: session title, learning objectives, audience, format (half day / full day / remote), fee (minimum £800, target £1,200). Attach your bio.", stream: "ccc" },
+          { day: "Thu", task: "Draft a second pitch for a different outlet than Monday's. Keep it in reserve — if pitch 1 bounces, this goes out same day.", stream: "writing" },
+          { day: "Fri", task: "Email three people in your existing professional network about the CPD offer. Not selling — testing: 'I'm developing a half-day training on [X] — is this something your team or trainees would find useful?' Note replies.", stream: "ccc" }
+        ]
+      },
+      {
+        num: "Week 3",
+        title: "Consultancy offer + IP note",
+        days: [
+          { day: "Mon", task: "Write a one-page consultancy offer: three fixed-scope services with a deliverable, a timeframe, and a price for each. E.g. 'Clinical review of patient-facing addiction content — written memo, 5 working days, £750.'", stream: "consult", note: "Keep it to three services. Bounded. No retainers." },
+          { day: "Tue", task: "Identify 5 digital health organisations working in addiction, homelessness, or complex populations. Find the right contact at each (medical affairs, clinical lead, or founder).", stream: "consult" },
+          { day: "Wed", task: "Send one consultancy enquiry — to someone you know tangentially, not cold. Frame it as: 'I'm offering structured clinical review — would this be useful for [specific thing they're working on]?'", stream: "consult" },
+          { day: "Thu", task: "Research DCB0129 Clinical Safety Officer accreditation. What does it involve, how long, what does it cost, what liability do you carry? Write a one-paragraph verdict: pursue / park / no.", stream: "consult" },
+          { day: "Fri", task: "Write 500 words of the Ecology of Addiction essay. Don't plan it — just write. See if the voice is there.", stream: "book", note: "Possible angle: 'Rural Addiction: Why Scotland's Drug Deaths Are a Landscape Problem.'" }
+        ]
+      },
+      {
+        num: "Week 4",
+        title: "Follow-ups + first smallholding audit",
+        days: [
+          { day: "Mon", task: "Chase any outstanding pitches (one sentence, no grovelling). If pitch 1 has bounced, send pitch 2. Draft pitch 3 for a third outlet.", stream: "writing" },
+          { day: "Tue", task: "Look up 3 addiction medicine / clinical communication conferences in Scotland and the UK with open workshop/session submissions. Note deadlines.", stream: "ccc" },
+          { day: "Wed", task: "Reach out to one third-sector organisation — Scottish Drugs Forum, We Are With You, Cyrenians — about CPD training needs. One email, specific offer.", stream: "ccc" },
+          { day: "Thu", task: "Informal IP protection: write a detailed timestamped description of the Charged Consultation framework — all 13 moves, the theory, the use case — and email it to yourself. This is your priority date.", stream: "infra" },
+          { day: "Fri", task: "Smallholding audit: what do you have? Honey, eggs, beeswax, foraged goods — what's seasonal, what's ready, what would you actually sell? One email to a local farm shop about consignment terms.", stream: "land" }
+        ]
+      }
+    ]
+  },
+  {
+    phase: "Phase Two — First Sales",
+    phaseNote: "Weeks 5–8 · Commission, pilot, first paid work",
+    weeks: [
+      {
+        num: "Week 5",
+        title: "Write to commission + NES approach",
+        days: [
+          { day: "Mon", task: "Write 1,000 words of the first clinical essay — speculatively if uncommissioned. Completing a draft means you can pitch with 'piece available on request.'", stream: "writing" },
+          { day: "Tue", task: "Send CPD offer to NES: find the right inbox, attach the one-pager from week 2, write a three-sentence covering note. No more than three sentences.", stream: "ccc" },
+          { day: "Wed", task: "Read the IPO guidance on protecting a methodology or framework. Note what's needed. Brief conversation with a Scottish IP solicitor is worth considering before you license to organisations.", stream: "infra" },
+          { day: "Thu", task: "Identify pharmaceutical companies with products in the addiction space — buprenorphine, naloxone, lofexidine, extended-release formulations. Find medical affairs contacts for advisory board work.", stream: "consult" },
+          { day: "Fri", task: "Look into a local farmers market or farm shop: date, stall fee if applicable, what you'd bring. Make a decision — yes or no. If yes, book it.", stream: "land" }
+        ]
+      },
+      {
+        num: "Week 6",
+        title: "Polish + cold outreach",
+        days: [
+          { day: "Mon", task: "Finish and polish the speculative essay. Read it aloud once. Then: is it good? If yes, send it to the best outlet. If no, what does it need?", stream: "writing" },
+          { day: "Tue", task: "Send one cold consultancy email to a health tech organisation you identified in week 3. Specific bounded offer. One deliverable, one price, one follow-up allowed.", stream: "consult" },
+          { day: "Wed", task: "Draft the structure of your professional webpage — two lanes: (1) Clinical Training & Consultancy, (2) Writing. You don't need it live this week. Just: what goes on it?", stream: "infra" },
+          { day: "Thu", task: "Pitch the Ecology of Addiction essay (or a related long-form piece) to one literary/long-form outlet. Guardian Long Read, Aeon, or Prospect are your tier-one targets.", stream: "writing" },
+          { day: "Fri", task: "Review: what's in motion after six weeks? Pitches sent, responses received, CPD enquiries, consultancy leads. What needs chasing and what needs dropping?", stream: "infra" }
+        ]
+      },
+      {
+        num: "Week 7",
+        title: "Book idea + CPD package build",
+        days: [
+          { day: "Mon", task: "If a writing commission has been accepted: start the piece in earnest. If not: send pitch 2 to a backup outlet and identify pitch 3.", stream: "writing" },
+          { day: "Tue", task: "Follow up on CPD approaches. If NES hasn't replied after 2 weeks, try a different route: RCGP Scotland addiction faculty, local health board training lead, or a deanery.", stream: "ccc" },
+          { day: "Wed", task: "Build the Charged Consultation into a proper CPD package document: learning objectives, session plan, participant handout outline, facilitator notes. This is what you attach to a commission.", stream: "ccc" },
+          { day: "Thu", task: "Send one pharma advisory board enquiry. Keep it brief — you're available for [topic area], here is your profile, what does a session involve?", stream: "consult" },
+          { day: "Fri", task: "Write 300 words on what the non-fiction book would be. Not a proposal. Just: what's the story, who's it for, why now, why you. Save it. Return to it in week 12.", stream: "book" }
+        ]
+      },
+      {
+        num: "Week 8",
+        title: "Scope first paid project + agent research",
+        days: [
+          { day: "Mon", task: "If a consultancy enquiry has gone warm: scope it. Write back with a one-paragraph project brief — specific deliverable, timeframe, and fee. This is the moment to hold the line on scope.", stream: "consult" },
+          { day: "Tue", task: "Get the webpage live. Simple. Clean. Two lanes. Your bio, what you offer, how to contact you. Doesn't need to be perfect — it needs to exist.", stream: "infra" },
+          { day: "Wed", task: "Research literary agents who represent UK medical non-fiction. Make a list of 10. Note recent relevant acquisitions that might signal appetite for your book.", stream: "book", note: "Search 'literary agent UK narrative non-fiction medical' and look at acknowledgements pages of comparable books." },
+          { day: "Thu", task: "Send second pharma or third-sector advisory enquiry. Build the pipeline — you want 3–4 paid advisory engagements across the year.", stream: "consult" },
+          { day: "Fri", task: "Honey/eggs check: do you have product? If the farm shop said yes in week 4, confirm quantities and deliver your first batch on consignment.", stream: "land" }
+        ]
+      }
+    ]
+  },
+  {
+    phase: "Phase Three — Consolidate",
+    phaseNote: "Weeks 9–12 · Deliver, debrief, set trajectory",
+    weeks: [
+      {
+        num: "Week 9",
+        title: "First deliverable + book expansion",
+        days: [
+          { day: "Mon", task: "Complete and submit your first commissioned clinical writing piece. If it's not yet commissioned, complete the draft anyway and send to an outlet marked 'available immediately.'", stream: "writing" },
+          { day: "Tue", task: "CPD pilot status: if you have a taker, confirm the date and send joining instructions. If not, broaden outreach to one new organisation you haven't tried yet.", stream: "ccc" },
+          { day: "Wed", task: "Pitch a second clinical writing piece to a different outlet. By now you should have a pitching rhythm — one new pitch every 1–2 weeks.", stream: "writing" },
+          { day: "Thu", task: "Expand the book note from week 7 to 800 words. What are the chapters? What's the structural arc? Where does it begin?", stream: "book" },
+          { day: "Fri", task: "Go outside. Forage something, tend something, notice something. This is not optional and it is not wasted time.", stream: "land" }
+        ]
+      },
+      {
+        num: "Week 10",
+        title: "Consultancy pipeline + writing rhythm",
+        days: [
+          { day: "Mon", task: "Send three more targeted advisory board or expert reviewer enquiries — mix of pharma, charity, and NHS innovation bodies.", stream: "consult" },
+          { day: "Tue", task: "Prepare for CPD pilot (if booked): run through the session once, time it, check the AI component works, prepare the follow-up survey you'll send after.", stream: "ccc" },
+          { day: "Wed", task: "Third writing pitch: this one should be speculative non-fiction rather than clinical essay — the ecology/addiction angle or the supervised consumption story.", stream: "writing" },
+          { day: "Thu", task: "Review the consultancy offer sheet from week 3. Is the pricing still right? Have you learned anything from the enquiries? Revise if needed.", stream: "consult" },
+          { day: "Fri", task: "Write 500 more words of the Ecology of Addiction essay or a second essay entirely. Keep the book material growing even if it's not yet a priority.", stream: "book" }
+        ]
+      },
+      {
+        num: "Week 11",
+        title: "CPD pilot debrief + income review",
+        days: [
+          { day: "Mon", task: "CPD pilot debrief (if delivered): what worked, what didn't, what would you charge next time, who else should receive this? Write a half-page debrief for your own use.", stream: "ccc" },
+          { day: "Tue", task: "Write a short case study of the CPD pilot (real or projected) for use in future pitches to commissioners. 150 words, specific outcomes.", stream: "ccc" },
+          { day: "Wed", task: "Review all income streams in motion: pitches accepted or in progress, consultancy contracted, CPD booked, advisory board confirmed. What is the projected year-one total?", stream: "infra" },
+          { day: "Thu", task: "Shortlist 3 literary agents from your week 8 list. Read their submission guidelines carefully. Draft a covering letter — one paragraph on the book, one on you.", stream: "book" },
+          { day: "Fri", task: "Produce your first batch of smallholding product for sale. Jar the honey, pack the eggs, label what needs labelling. Do it properly — presentation matters even at small scale.", stream: "land" }
+        ]
+      },
+      {
+        num: "Week 12",
+        title: "Trajectory decision + book outline",
+        days: [
+          { day: "Mon", task: "Decide which one stream gets primary attention in months 4–6. The Charged Consultation product and the writing commissions together are enough. Don't add more until these are running.", stream: "infra" },
+          { day: "Tue", task: "Write the three-chapter outline for the book. Chapter titles, one paragraph each on what they cover. Don't write the chapters — write the map.", stream: "book" },
+          { day: "Wed", task: "Prepare and send the first agent covering letter. Or set a firm date (within the next two weeks) to do so. The proposal doesn't have to be finished for the letter to go out.", stream: "book" },
+          { day: "Thu", task: "Send one final pitch for a clinical writing commission. By now your pitching should feel routine — if it doesn't, ask why.", stream: "writing" },
+          { day: "Fri", task: "That's twelve weeks. Review what landed, what didn't, and what surprised you. Write a half-page note to yourself. Then: decide what the next twelve weeks look like.", stream: "infra" }
+        ]
+      }
+    ]
+  }
+];
+
+// Build DOM
+const planEl = document.getElementById('plan');
+let allTaskIds = [];
+
+PLAN.forEach((phase, pi) => {
+  const phDiv = document.createElement('div');
+  phDiv.innerHTML = `
+    <div class="phase-header">
+      <span class="phase-label">${phase.phase}</span>
+      <div class="phase-line"></div>
+      <span class="phase-subtitle">${phase.phaseNote}</span>
+    </div>
+  `;
+  planEl.appendChild(phDiv);
+
+  phase.weeks.forEach((week, wi) => {
+    const weekEl = document.createElement('div');
+    weekEl.className = 'week';
+    weekEl.id = `week-${pi}-${wi}`;
+
+    const togId = `tog-${pi}-${wi}`;
+    const bodyId = `body-${pi}-${wi}`;
+
+    weekEl.innerHTML = `
+      <button class="week-toggle" id="${togId}" onclick="toggleWeek(${pi},${wi})">
+        <span class="week-num">${week.num}</span>
+        <span class="week-title">${week.title}</span>
+        <span class="week-done-count" id="wc-${pi}-${wi}"></span>
+        <span class="week-arrow">▾</span>
+      </button>
+      <div class="week-body" id="${bodyId}"></div>
+    `;
+
+    const body = weekEl.querySelector('.week-body');
+
+    week.days.forEach((d, di) => {
+      const tid = `task-${pi}-${wi}-${di}`;
+      allTaskIds.push(tid);
+
+      const streams = d.stream.split(',').map(s => streamTag(s.trim())).join('');
+
+      const row = document.createElement('div');
+      row.className = 'day-row';
+      row.id = tid;
+      row.innerHTML = `
+        <div class="day-check"></div>
+        <span class="day-label">${d.day}</span>
+        <div class="task-content">
+          <div class="task-text">${d.task}${streams}</div>
+          ${d.note ? `<div class="task-note">${d.note}</div>` : ''}
+        </div>
+      `;
+      row.onclick = () => toggleTask(tid, pi, wi);
+      body.appendChild(row);
+    });
+
+    planEl.appendChild(weekEl);
+  });
+});
+
+function streamTag(s) {
+  const map = {
+    writing: ['stream-writing', 'Writing'],
+    ccc: ['stream-ccc', 'Charged Consult'],
+    consult: ['stream-consult', 'Consultancy'],
+    infra: ['stream-infra', 'Infrastructure'],
+    book: ['stream-book', 'Book'],
+    land: ['stream-land', 'Land'],
+    'writing,infra': ['stream-infra', 'Writing + Infra']
+  };
+  const m = map[s] || ['stream-infra', s];
+  return `<span class="task-stream ${m[0]}">${m[1]}</span>`;
+}
+
+function toggleWeek(pi, wi) {
+  const w = document.getElementById(`week-${pi}-${wi}`);
+  w.classList.toggle('open');
+}
+
+// State
+let done = new Set();
+
+function toggleTask(tid, pi, wi) {
+  const el = document.getElementById(tid);
+  if (done.has(tid)) {
+    done.delete(tid);
+    el.classList.remove('done');
+  } else {
+    done.add(tid);
+    el.classList.add('done');
+  }
+  saveState();
+  updateProgress();
+  updateWeekCount(pi, wi);
+}
+
+function updateProgress() {
+  const total = allTaskIds.length;
+  const n = done.size;
+  const pct = Math.round((n / total) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `${n} of ${total} tasks done`;
+}
+
+function updateWeekCount(pi, wi) {
+  const week = PLAN[pi].weeks[wi];
+  const total = week.days.length;
+  let n = 0;
+  week.days.forEach((_, di) => {
+    if (done.has(`task-${pi}-${wi}-${di}`)) n++;
+  });
+  const el = document.getElementById(`wc-${pi}-${wi}`);
+  if (n === 0) { el.textContent = ''; return; }
+  el.textContent = n === total ? '✓ complete' : `${n}/${total}`;
+}
+
+function updateAllWeekCounts() {
+  PLAN.forEach((phase, pi) => {
+    phase.weeks.forEach((week, wi) => updateWeekCount(pi, wi));
+  });
+}
+
+// Persistence via window.storage
+async function saveState() {
+  try {
+    await window.storage.set('side-hustle-done', JSON.stringify([...done]));
+  } catch(e) {}
+}
+
+async function loadState() {
+  try {
+    const r = await window.storage.get('side-hustle-done');
+    if (r && r.value) {
+      const arr = JSON.parse(r.value);
+      arr.forEach(tid => {
+        done.add(tid);
+        const el = document.getElementById(tid);
+        if (el) el.classList.add('done');
+      });
+    }
+  } catch(e) {}
+  updateProgress();
+  updateAllWeekCounts();
+}
+
+async function resetAll() {
+  if (!confirm('Reset all progress?')) return;
+  done.clear();
+  allTaskIds.forEach(tid => {
+    const el = document.getElementById(tid);
+    if (el) el.classList.remove('done');
+  });
+  try { await window.storage.delete('side-hustle-done'); } catch(e) {}
+  updateProgress();
+  updateAllWeekCounts();
+}
+
+// Open week 1 by default
+document.getElementById('week-0-0').classList.add('open');
+
+loadState();
+</script>
+</body>
+</html>
