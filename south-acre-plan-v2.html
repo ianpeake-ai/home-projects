@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>South Acre — The Real Plan</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+
+  :root {
+    --ink: #1c1710;
+    --parchment: #f6f0e4;
+    --parchment-mid: #ede3cc;
+    --parchment-dark: #d9ccb0;
+    --gold: #9a7c2e;
+    --gold-light: #b8962e;
+    --gold-dim: #6b5520;
+    --stone: #7a6a58;
+    --stone-light: #a89880;
+    --moss: #3d5230;
+    --moss-light: #5a7045;
+    --crimson: #7a2020;
+    --crimson-light: #9a3030;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--parchment);
+    color: var(--ink);
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+  }
+
+  header {
+    text-align: center;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--parchment-dark);
+    margin-bottom: 2.5rem;
+  }
+
+  .header-eyebrow {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--stone);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+    margin-bottom: 0.4rem;
+  }
+
+  .header-sub {
+    color: var(--stone);
+    font-style: italic;
+    font-size: 1rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .progress-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .progress-bar {
+    width: 220px;
+    height: 4px;
+    background: var(--parchment-dark);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--moss);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  .progress-label {
+    font-size: 0.85rem;
+    color: var(--stone);
+    font-style: italic;
+  }
+
+  /* Income tracker */
+  .income-tracker {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .income-card {
+    border: 1px solid var(--parchment-dark);
+    border-radius: 3px;
+    padding: 0.85rem 1rem;
+    background: rgba(255,255,255,0.35);
+  }
+
+  .income-card-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+
+  .income-card.betting .income-card-label { color: var(--moss); }
+  .income-card.land .income-card-label { color: var(--gold-dim); }
+  .income-card.writing .income-card-label { color: var(--crimson); }
+
+  .income-card-range {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.15rem;
+  }
+
+  .income-card-note {
+    font-size: 0.78rem;
+    color: var(--stone);
+    font-style: italic;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    padding: 0.85rem 1.1rem;
+    background: rgba(255,255,255,0.35);
+    border: 1px solid var(--parchment-dark);
+    border-radius: 3px;
+    align-items: center;
+  }
+
+  .legend-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-right: 0.25rem;
+  }
+
+  /* Phase */
+  .phase-header {
+    margin: 2.5rem 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .phase-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    white-space: nowrap;
+  }
+
+  .phase-line { flex: 1; height: 1px; background: var(--parchment-dark); }
+
+  .phase-subtitle {
+    font-style: italic;
+    color: var(--stone);
+    font-size: 0.88rem;
+    white-space: nowrap;
+  }
+
+  /* Week */
+  .week {
+    border: 1px solid var(--parchment-dark);
+    border-radius: 3px;
+    margin-bottom: 0.85rem;
+    overflow: hidden;
+    background: rgba(255,255,255,0.28);
+  }
+
+  .week-toggle {
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.85rem 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-align: left;
+    transition: background 0.2s;
+  }
+
+  .week-toggle:hover { background: rgba(154,124,46,0.05); }
+
+  .week-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    min-width: 58px;
+  }
+
+  .week-title {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+    flex: 1;
+  }
+
+  .week-done-count {
+    font-size: 0.78rem;
+    color: var(--stone);
+    font-style: italic;
+    margin-right: 0.4rem;
+  }
+
+  .week-arrow { color: var(--stone-light); font-size: 0.68rem; transition: transform 0.3s; }
+  .week.open .week-arrow { transform: rotate(180deg); }
+
+  .week-body { display: none; border-top: 1px solid var(--parchment-dark); }
+  .week.open .week-body { display: block; }
+
+  /* Day rows */
+  .day-row {
+    display: flex;
+    align-items: flex-start;
+    padding: 0.55rem 1.2rem 0.55rem 1rem;
+    border-bottom: 1px solid rgba(217,204,176,0.35);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .day-row:last-child { border-bottom: none; }
+  .day-row:hover { background: rgba(154,124,46,0.04); }
+
+  .day-row.done { opacity: 0.48; }
+  .day-row.done .task-text { text-decoration: line-through; color: var(--stone); }
+
+  .day-check {
+    width: 15px;
+    height: 15px;
+    border: 1.5px solid var(--parchment-dark);
+    border-radius: 2px;
+    margin-top: 3px;
+    margin-right: 0.85rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    transition: all 0.2s;
+  }
+
+  .day-row.done .day-check { background: var(--moss); border-color: var(--moss); }
+
+  .day-check::after {
+    content: '';
+    width: 7px;
+    height: 4px;
+    border-left: 1.5px solid white;
+    border-bottom: 1.5px solid white;
+    transform: rotate(-45deg) translateY(-1px);
+    display: none;
+  }
+
+  .day-row.done .day-check::after { display: block; }
+
+  .day-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--stone-light);
+    min-width: 36px;
+    margin-right: 0.85rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .task-content { flex: 1; }
+
+  .task-text { font-size: 0.96rem; color: var(--ink); line-height: 1.5; }
+
+  .task-stream {
+    display: inline-block;
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.08rem 0.42rem;
+    border-radius: 2px;
+    margin-left: 0.45rem;
+    vertical-align: middle;
+    font-family: 'Crimson Pro', serif;
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .stream-betting { background: rgba(61,82,48,0.1); color: var(--moss); }
+  .stream-land { background: rgba(154,124,46,0.12); color: var(--gold-dim); }
+  .stream-writing { background: rgba(122,32,32,0.1); color: var(--crimson); }
+  .stream-infra { background: rgba(122,106,88,0.1); color: var(--stone); }
+
+  .task-note {
+    font-size: 0.83rem;
+    color: var(--stone);
+    font-style: italic;
+    margin-top: 0.15rem;
+    line-height: 1.4;
+  }
+
+  .reset-btn {
+    background: none;
+    border: 1px solid var(--parchment-dark);
+    color: var(--stone);
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 1rem;
+    display: block;
+    margin-left: auto;
+  }
+
+  .reset-btn:hover { border-color: var(--crimson); color: var(--crimson); }
+
+  footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--parchment-dark);
+    font-style: italic;
+    color: var(--stone-light);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 600px) {
+    .income-tracker { grid-template-columns: 1fr; }
+    .wrapper { padding: 2rem 1rem 4rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+<header>
+  <div class="header-eyebrow">South Acre — what survived two rounds and a Council of Elrond</div>
+  <h1>The Real Plan</h1>
+  <div class="header-sub">Three streams. Twelve weeks. No mythology.</div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="progress-label" id="progressLabel">0 of 60 tasks done</div>
+  </div>
+</header>
+
+<div class="income-tracker">
+  <div class="income-card betting">
+    <div class="income-card-label">Matched Betting</div>
+    <div class="income-card-range">£2,500–£3,500</div>
+    <div class="income-card-note">Year one. Starts this weekend.</div>
+  </div>
+  <div class="income-card land">
+    <div class="income-card-label">South Acre Gate Shop</div>
+    <div class="income-card-range">£800–£2,000</div>
+    <div class="income-card-note">Grows with the seasons and the hives.</div>
+  </div>
+  <div class="income-card writing">
+    <div class="income-card-label">Writing & Book</div>
+    <div class="income-card-range">£0–£3,000</div>
+    <div class="income-card-note">Long game. The thing that compounds.</div>
+  </div>
+</div>
+
+<div class="legend">
+  <span class="legend-title">Streams —</span>
+  <span class="task-stream stream-betting">Betting</span>
+  <span class="task-stream stream-land">Gate Shop</span>
+  <span class="task-stream stream-writing">Writing</span>
+  <span class="task-stream stream-infra">Infrastructure</span>
+</div>
+
+<div id="plan"></div>
+
+<button class="reset-btn" onclick="resetAll()">Reset all progress</button>
+
+<footer>The drug crisis is coming for you wherever you are and it doesn't care if you care.</footer>
+
+</div>
+
+<script>
+const PLAN = [
+  {
+    phase: "Phase One — Foundation",
+    phaseNote: "Weeks 1–4 · Set up, make first products, first pitches",
+    weeks: [
+      {
+        num: "Week 1",
+        title: "Betting infrastructure + product audit + first pitch",
+        days: [
+          {
+            day: "Mon",
+            task: "Open a Monzo account and a dedicated Gmail address. Open Betfair and fund it with £200. This is your entire matched betting setup — do it in one sitting, it takes under an hour.",
+            stream: "betting"
+          },
+          {
+            day: "Tue",
+            task: "Subscribe to OddsMonkey free trial. Read their beginner guide fully before placing anything. Build your tracking spreadsheet: Date / Bookmaker / Back stake / Back odds / Lay stake / Lay odds / Qualifying loss / Free bet value / Profit / Running total / Account status.",
+            stream: "betting"
+          },
+          {
+            day: "Wed",
+            task: "Walk South Acre with a notebook. Write down everything you could sell right now or within a month: eggs (how many per week honestly?), plants, dog treats if you made them, anything already in the larder. Be ruthlessly honest about quantities and timeline. The bees arrived this week — honey is late summer at earliest.",
+            stream: "land",
+            note: "Immediate products: eggs, dog treats, plants (seasonal). Medium-term: lip balm, soap, candles. Late summer: honey, cut comb, beeswax products."
+          },
+          {
+            day: "Thu",
+            task: "Write your first pitch. One paragraph hook, one paragraph credentials, one paragraph piece outline. Send it today — don't hold it over the weekend.",
+            stream: "writing",
+            note: "Aim upward: Drug & Alcohol Findings, Addiction journal, The Lancet Psychiatry for clinical. Aeon or Prospect for the ecology/addiction long-form."
+          },
+          {
+            day: "Fri",
+            task: "Place your first matched betting offer using OddsMonkey's step-by-step guide. Go slowly. Expect 45 minutes. The goal isn't profit yet — it's understanding the process. Record everything in your spreadsheet.",
+            stream: "betting"
+          }
+        ]
+      },
+      {
+        num: "Week 2",
+        title: "First offers + website sketch + write",
+        days: [
+          {
+            day: "Mon",
+            task: "Do 3–4 more signup offers. You should be getting faster. Target qualifying loss under £2 each. Record everything. You should have £50–80 in profit by end of today if you're doing it right.",
+            stream: "betting"
+          },
+          {
+            day: "Tue",
+            task: "Research food hygiene registration with East Ayrshire Council. What's required for eggs, preserves, dog treats, soaps? One hour online. Make a list of what needs formal registration vs what you can sell freely. Register if straightforward — it's free.",
+            stream: "land",
+            note: "Honey and eggs: generally exempt from food hygiene registration for small producers. Dog treats and preserves: likely need registration. Check with East Ayrshire directly."
+          },
+          {
+            day: "Wed",
+            task: "Sketch the website on paper first. Pages: Home (what South Acre is and feels like), Shop (products with availability status), Book a Pickup (embedded Calendly or simple form), About. Decide the aesthetic — it should feel like the place. You said you'd enjoy this. Start the build.",
+            stream: "land"
+          },
+          {
+            day: "Thu",
+            task: "Write 500 words of the ecology/addiction essay. Don't plan it — your first line already exists. See what follows it.",
+            stream: "writing",
+            note: "The drug crisis is coming for you wherever you are and it doesn't care if you care."
+          },
+          {
+            day: "Fri",
+            task: "4–5 more signup offers. Running total should be £100–150 by end of week 2.",
+            stream: "betting"
+          }
+        ]
+      },
+      {
+        num: "Week 3",
+        title: "Make first products + website build + pitch 2",
+        days: [
+          {
+            day: "Mon",
+            task: "Do 4–5 signup offers. You're in flow now. Note which bookmakers have better lay odds on the exchange — you'll develop a feel for which offers are worth pursuing.",
+            stream: "betting"
+          },
+          {
+            day: "Tue",
+            task: "Make your first batch of dog treats. Simple recipe: oats, peanut butter, eggs, a little honey. Uses your eggs, costs almost nothing. Photograph them well — natural light, South Acre as backdrop. Write the product description: ingredients, weight, price (£4–6 per bag). This is your first product.",
+            stream: "land",
+            note: "If you want to add lip balm: order beeswax pellets (can use bought until your hives produce), shea butter, coconut oil. ~£25 from Amazon or a soap supplies shop."
+          },
+          {
+            day: "Wed",
+            task: "Continue building the website. Get the structure live even if not all products are ready. A domain name if you want one is ~£10/year. The booking system can be a free Calendly embed or a simple Google Form with email notification.",
+            stream: "land"
+          },
+          {
+            day: "Thu",
+            task: "Draft pitch 2 for a different outlet than pitch 1. Keep it in reserve — if pitch 1 bounces, this goes out same day. Don't overthink the targeting: if the first pitch went clinical, make this one literary. If it went literary, make this one clinical.",
+            stream: "writing"
+          },
+          {
+            day: "Fri",
+            task: "4–5 more signup offers. You're probably 3 weeks in and should have £150–220 running profit.",
+            stream: "betting"
+          }
+        ]
+      },
+      {
+        num: "Week 4",
+        title: "First products ready + pitch follow-ups + reload rhythm",
+        days: [
+          {
+            day: "Mon",
+            task: "Signup offers continuing — you may be through the high-value ones. Start noting which reload offers are available weekly. Sunday evenings work well for reloads: lots of football, good Betfair liquidity.",
+            stream: "betting"
+          },
+          {
+            day: "Tue",
+            task: "Make first batch of lip balm if materials have arrived. Test it properly. If it's good: photograph, write description, set a price (£4–6 each or £10–14 for a gift set of three). Add to website.",
+            stream: "land"
+          },
+          {
+            day: "Wed",
+            task: "Finish the website to a launchable state. Product pages, booking system working, mobile tested. It doesn't need to be perfect — it needs to exist.",
+            stream: "land",
+            note: "Products live at launch: eggs (if available), dog treats, lip balm. Everything else gets added as it's ready."
+          },
+          {
+            day: "Thu",
+            task: "Follow up on pitch 1 (one sentence, no grovelling). If it's bounced, send pitch 2 today. Write 500 more words of the essay.",
+            stream: "writing"
+          },
+          {
+            day: "Fri",
+            task: "Soft launch the website. Tell 8–10 people: neighbours, friends nearby, Pete's contacts. Not a marketing push — just 'this exists now, here's the link.' Your first customer is probably someone who already knows you.",
+            stream: "land"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    phase: "Phase Two — First Sales",
+    phaseNote: "Weeks 5–8 · Money in, rhythm established, products expanding",
+    weeks: [
+      {
+        num: "Week 5",
+        title: "First pickup window + betting in flow + write",
+        days: [
+          {
+            day: "Mon",
+            task: "Reload offers: work through this week's available promotions. 2–3 hours across the week, not in one sitting. You should know the process well enough that this is routine now.",
+            stream: "betting"
+          },
+          {
+            day: "Tue",
+            task: "Open your first pickup window. Announce this week's availability to your initial list: what you have, how much, how to book. Keep it simple — one message, one pickup window (say Thursday 5–7pm or Saturday 10am–12pm). First sale.",
+            stream: "land"
+          },
+          {
+            day: "Wed",
+            task: "Make whatever sold out. Note what moved and what didn't. Begin a simple stock and sales log — even a Google Sheet. This is your pricing and production intelligence.",
+            stream: "land"
+          },
+          {
+            day: "Thu",
+            task: "If a commission has landed: start the piece in earnest. If not: pitch 3. The target this time should be one step above where you've been pitching. The essay draft should be around 1,500 words by now.",
+            stream: "writing"
+          },
+          {
+            day: "Fri",
+            task: "Betting running total check. Where are you against the £2,500–3,500 year-one projection? You should be at roughly £300–400 by end of week 5 if offers have been consistent.",
+            stream: "betting"
+          }
+        ]
+      },
+      {
+        num: "Week 6",
+        title: "Products expanding + writing rhythm + reload steady",
+        days: [
+          {
+            day: "Mon",
+            task: "Reload offers. Start noting which bookmakers are beginning to restrict you — this is expected and it means you've successfully extracted value from them. Move on without sentiment.",
+            stream: "betting"
+          },
+          {
+            day: "Tue",
+            task: "Begin soap making if you want to add it. Melt-and-pour is the easiest entry: buy a soap base, melt, add fragrance or botanicals from the garden, pour into moulds. Test batch needs 48 hours to set and a week to cure. This is a 2-week lead time to a saleable product.",
+            stream: "land",
+            note: "Soap base ~£15 for 1kg online. Simple lavender or garden herb soap feels right for South Acre. Price at £5–8 per bar."
+          },
+          {
+            day: "Wed",
+            task: "Add new products to the website as they're ready. Consider a 'coming soon' section for honey — with an email notification signup for when the first harvest lands. This builds a warm list for your highest-margin product.",
+            stream: "land"
+          },
+          {
+            day: "Thu",
+            task: "Work on the book note. 300 words: what is the book, who is it for, why now, why you. Not a proposal. Just the idea written down clearly. Save it somewhere you won't lose it.",
+            stream: "writing",
+            note: "Your neighbour asked 'But surely they HAVE to?' That question is the spine."
+          },
+          {
+            day: "Fri",
+            task: "Second pickup window. Growing the customer list. Are people coming back? Are they telling anyone else?",
+            stream: "land"
+          }
+        ]
+      },
+      {
+        num: "Week 7",
+        title: "Product range deepening + essay nearing complete + betting steady",
+        days: [
+          {
+            day: "Mon",
+            task: "Reload offers. Which bookmakers are still productive? Which have gubbed you? Update the account status column in your spreadsheet. Your monthly reload income will be clearer now — probably £150–250/month from what remains.",
+            stream: "betting"
+          },
+          {
+            day: "Tue",
+            task: "Soap batch should be cured. Test it, photograph it, price it, add to website. If you're happy with it, make a larger second batch using what you learned from the first.",
+            stream: "land"
+          },
+          {
+            day: "Wed",
+            task: "Review the website with fresh eyes. What's working visually? What's confusing? Are the photos good enough? Small improvements compound — one better photo, one clearer product description, one smoother booking flow.",
+            stream: "land"
+          },
+          {
+            day: "Thu",
+            task: "The ecology/addiction essay should be nearing a complete draft at ~2,500 words. Read it aloud. Is the voice there? If yes: begin preparing it for submission. If no: what specifically is missing?",
+            stream: "writing"
+          },
+          {
+            day: "Fri",
+            task: "Third pickup window. Consider whether a regular fortnightly slot would serve better than pure on-demand at this point — if you have enough regular customers to justify a set rhythm.",
+            stream: "land"
+          }
+        ]
+      },
+      {
+        num: "Week 8",
+        title: "Mid-point review + honey timeline + pitch follow-ups",
+        days: [
+          {
+            day: "Mon",
+            task: "Full mid-point review: betting running total, gate sales income to date, pitches sent and responses received. Write the numbers down. What does year-one look like from here?",
+            stream: "infra"
+          },
+          {
+            day: "Tue",
+            task: "Bees check-in. How are the hives settling? What's the realistic first harvest timeline — late July, August? Plan the website honey page as a 'coming soon' with email signup. Premium pricing: cut comb at £8–12 per section, set honey at £8–12 per jar, creamed honey at £10–14.",
+            stream: "land"
+          },
+          {
+            day: "Wed",
+            task: "Submit the essay. Send to your best target. If it's not ready, send pitch 3 for a different piece — something shorter and more immediately pitchable while the longer essay develops.",
+            stream: "writing"
+          },
+          {
+            day: "Thu",
+            task: "Begin sourcing materials for autumn and Christmas products. Furniture wax (beeswax plus turpentine or linseed oil — simple to make once you have wax). Candles. Gift sets. These need planning now even if they're months away.",
+            stream: "land",
+            note: "Christmas products command significant premiums for hand-made, local, honest-ingredients goods. A gift set of honey, lip balm, and a candle at £25–35 is realistic."
+          },
+          {
+            day: "Fri",
+            task: "Chase outstanding pitches if needed. If nothing has landed in 8 weeks of pitching, review the pitches themselves — is the hook strong enough? Is the outlet right? Ask someone you trust to read one.",
+            stream: "writing"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    phase: "Phase Three — Consolidate",
+    phaseNote: "Weeks 9–12 · Deliver, review, set the next twelve months",
+    weeks: [
+      {
+        num: "Week 9",
+        title: "All streams running + book beginning",
+        days: [
+          {
+            day: "Mon",
+            task: "Betting: reload offers, steady state. The signup phase is history. What you have now is a smaller but recurring income from reloads. Protect the accounts that remain open by not being greedy.",
+            stream: "betting"
+          },
+          {
+            day: "Tue",
+            task: "Write the first 500 words of the book properly. The neighbour and his tulips. The question. Don't edit — just write. See if the voice is there and whether it feels different from the essay.",
+            stream: "writing"
+          },
+          {
+            day: "Wed",
+            task: "Fourth pickup window. Is there a stable local customer base forming? Are the same people coming back? What are they asking for that you don't have yet?",
+            stream: "land"
+          },
+          {
+            day: "Thu",
+            task: "If a commission has landed: complete and submit it. If still uncommissioned: send the essay speculatively to your second-choice outlet marked 'available immediately.' A completed piece can always find a home.",
+            stream: "writing"
+          },
+          {
+            day: "Fri",
+            task: "Add or update seasonal products. Remove anything that hasn't sold after 3+ weeks. Dead stock on the website looks like a poorly run operation. Tight and current beats broad and stale.",
+            stream: "land"
+          }
+        ]
+      },
+      {
+        num: "Week 10",
+        title: "Income review + writing momentum + product refinement",
+        days: [
+          {
+            day: "Mon",
+            task: "Betting: this week's reloads. Also — check the Profit Accumulator or OddsMonkey casino offers section if you haven't. Casino matched offers can be profitable but require more careful reading of terms. Attempt one this week with small stakes.",
+            stream: "betting"
+          },
+          {
+            day: "Tue",
+            task: "Write 500 more words of the book. You should have around 1,000 words accumulated. Don't look back at what you've written — just keep adding forward.",
+            stream: "writing"
+          },
+          {
+            day: "Wed",
+            task: "Raise prices on anything selling consistently well. Demand is your pricing signal. If dog treats sell out every pickup window, they are underpriced. If lip balm sits, it may be overpriced or needs better photography.",
+            stream: "land"
+          },
+          {
+            day: "Thu",
+            task: "Pitch a second piece — different from the first, different outlet, different register. By now you should have a sense of what you enjoy writing and what you don't. Trust that.",
+            stream: "writing"
+          },
+          {
+            day: "Fri",
+            task: "Make a batch of something ahead of season. If autumn is approaching: start planning preserves, dried herbs from the garden, anything that uses summer surplus before it's gone.",
+            stream: "land"
+          }
+        ]
+      },
+      {
+        num: "Week 11",
+        title: "Book structure + Christmas prep + betting steady",
+        days: [
+          {
+            day: "Mon",
+            task: "Betting: reloads ongoing. Note your total number of remaining active accounts. If it's dropping fast, start thinking about the sustainability of the reload income into year two.",
+            stream: "betting"
+          },
+          {
+            day: "Tue",
+            task: "Write the three-chapter outline for the book. Chapter titles, one paragraph each on what they cover. Don't write the chapters — write the map. Save it somewhere permanent.",
+            stream: "writing"
+          },
+          {
+            day: "Wed",
+            task: "Begin Christmas product development: lip balm gift sets, candles (buy wicks and moulds now, use beeswax when you have it or bought wax in the interim), dog treat gift bags. These take 4–6 weeks lead time to do properly.",
+            stream: "land",
+            note: "Christmas premium: people pay significantly more for hand-made, local, natural goods in November and December. Don't underprice gift sets."
+          },
+          {
+            day: "Thu",
+            task: "Research 10 literary agents who represent UK narrative non-fiction. Note recent acquisitions, submission guidelines, and any public statements about what they're looking for. This is groundwork — the proposal isn't ready yet, but the list should be.",
+            stream: "writing"
+          },
+          {
+            day: "Fri",
+            task: "Fifth pickup window. If honey is imminent: email the notification list you've been building. First honey sale should be an event — let people know it's coming.",
+            stream: "land"
+          }
+        ]
+      },
+      {
+        num: "Week 12",
+        title: "Trajectory decision + next twelve months",
+        days: [
+          {
+            day: "Mon",
+            task: "Full income review: betting total to date (projected annual from current run rate), gate sales total, writing income if any. What does year one actually look like? Write the numbers plainly.",
+            stream: "infra"
+          },
+          {
+            day: "Tue",
+            task: "The book: 1,500 words accumulated by now. Read it back for the first time. Is it a book? Write a half-page honest assessment of whether the voice is there and whether you want to keep going.",
+            stream: "writing"
+          },
+          {
+            day: "Wed",
+            task: "Website review: what's working, what isn't, what do customers keep asking for that you don't have? Plan the next season's product range. Honey should be imminent or already selling. Furniture wax once you have beeswax. Cough sweets (honey, lemon, ginger, set hard — simple and distinctive).",
+            stream: "land"
+          },
+          {
+            day: "Thu",
+            task: "Decide what the next twelve months look like. One primary writing project — the book or a significant essay series. One gate sales goal — a specific income number or a specific product milestone. Betting as background income until the accounts are exhausted.",
+            stream: "infra"
+          },
+          {
+            day: "Fri",
+            task: "Write the half-page note to yourself. What worked, what didn't, what surprised you. Then go outside. Tend something. This is the infrastructure too.",
+            stream: "infra"
+          }
+        ]
+      }
+    ]
+  }
+];
+
+// Stream tag builder
+function streamTag(s) {
+  const map = {
+    betting: ['stream-betting', 'Betting'],
+    land: ['stream-land', 'Gate Shop'],
+    writing: ['stream-writing', 'Writing'],
+    infra: ['stream-infra', 'Review']
+  };
+  const m = map[s] || ['stream-infra', s];
+  return `<span class="task-stream ${m[0]}">${m[1]}</span>`;
+}
+
+// Build DOM
+const planEl = document.getElementById('plan');
+let allTaskIds = [];
+
+PLAN.forEach((phase, pi) => {
+  const phDiv = document.createElement('div');
+  phDiv.innerHTML = `
+    <div class="phase-header">
+      <span class="phase-label">${phase.phase}</span>
+      <div class="phase-line"></div>
+      <span class="phase-subtitle">${phase.phaseNote}</span>
+    </div>
+  `;
+  planEl.appendChild(phDiv);
+
+  phase.weeks.forEach((week, wi) => {
+    const weekEl = document.createElement('div');
+    weekEl.className = 'week';
+    weekEl.id = `week-${pi}-${wi}`;
+
+    weekEl.innerHTML = `
+      <button class="week-toggle" onclick="toggleWeek(${pi},${wi})">
+        <span class="week-num">${week.num}</span>
+        <span class="week-title">${week.title}</span>
+        <span class="week-done-count" id="wc-${pi}-${wi}"></span>
+        <span class="week-arrow">▾</span>
+      </button>
+      <div class="week-body" id="body-${pi}-${wi}"></div>
+    `;
+
+    const body = weekEl.querySelector('.week-body');
+
+    week.days.forEach((d, di) => {
+      const tid = `task-${pi}-${wi}-${di}`;
+      allTaskIds.push(tid);
+
+      const row = document.createElement('div');
+      row.className = 'day-row';
+      row.id = tid;
+      row.innerHTML = `
+        <div class="day-check"></div>
+        <span class="day-label">${d.day}</span>
+        <div class="task-content">
+          <div class="task-text">${d.task}${streamTag(d.stream)}</div>
+          ${d.note ? `<div class="task-note">${d.note}</div>` : ''}
+        </div>
+      `;
+      row.onclick = () => toggleTask(tid, pi, wi);
+      body.appendChild(row);
+    });
+
+    planEl.appendChild(weekEl);
+  });
+});
+
+// State
+let done = new Set();
+
+function toggleWeek(pi, wi) {
+  document.getElementById(`week-${pi}-${wi}`).classList.toggle('open');
+}
+
+function toggleTask(tid, pi, wi) {
+  const el = document.getElementById(tid);
+  if (done.has(tid)) { done.delete(tid); el.classList.remove('done'); }
+  else { done.add(tid); el.classList.add('done'); }
+  saveState();
+  updateProgress();
+  updateWeekCount(pi, wi);
+}
+
+function updateProgress() {
+  const n = done.size;
+  const total = allTaskIds.length;
+  document.getElementById('progressFill').style.width = Math.round(n/total*100) + '%';
+  document.getElementById('progressLabel').textContent = `${n} of ${total} tasks done`;
+}
+
+function updateWeekCount(pi, wi) {
+  const total = PLAN[pi].weeks[wi].days.length;
+  let n = 0;
+  PLAN[pi].weeks[wi].days.forEach((_,di) => { if (done.has(`task-${pi}-${wi}-${di}`)) n++; });
+  const el = document.getElementById(`wc-${pi}-${wi}`);
+  el.textContent = n === 0 ? '' : n === total ? '✓ complete' : `${n}/${total}`;
+}
+
+function updateAllWeekCounts() {
+  PLAN.forEach((_,pi) => PLAN[pi].weeks.forEach((_,wi) => updateWeekCount(pi,wi)));
+}
+
+async function saveState() {
+  try { await window.storage.set('south-acre-v2-done', JSON.stringify([...done])); } catch(e) {}
+}
+
+async function loadState() {
+  try {
+    const r = await window.storage.get('south-acre-v2-done');
+    if (r?.value) {
+      JSON.parse(r.value).forEach(tid => {
+        done.add(tid);
+        const el = document.getElementById(tid);
+        if (el) el.classList.add('done');
+      });
+    }
+  } catch(e) {}
+  updateProgress();
+  updateAllWeekCounts();
+}
+
+async function resetAll() {
+  if (!confirm('Reset all progress?')) return;
+  done.clear();
+  allTaskIds.forEach(tid => { const el = document.getElementById(tid); if (el) el.classList.remove('done'); });
+  try { await window.storage.delete('south-acre-v2-done'); } catch(e) {}
+  updateProgress();
+  updateAllWeekCounts();
+}
+
+// Open week 1 by default
+document.getElementById('week-0-0').classList.add('open');
+loadState();
+</script>
+</body>
+</html>
