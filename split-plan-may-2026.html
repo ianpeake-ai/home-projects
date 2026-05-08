@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>South Acre — The Split Plan, May 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blossom: #e8d5d0;
+    --blossom-deep: #c9968a;
+    --may-green: #5a7a4a;
+    --may-light: #8aaa72;
+    --may-pale: #d8e8c8;
+    --sky-deep: #6888a0;
+    --bark: #4a3828;
+    --bark-light: #8a6848;
+    --lichen: #c0c8b0;
+    --cream: #faf7f2;
+    --ink: #1e1810;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 100% 60% at 0% 0%, rgba(232,213,208,0.3) 0%, transparent 50%),
+      radial-gradient(ellipse 80% 50% at 100% 30%, rgba(184,200,216,0.2) 0%, transparent 50%),
+      radial-gradient(ellipse 60% 80% at 30% 100%, rgba(216,232,200,0.25) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: linear-gradient(90deg, var(--blossom-deep), var(--may-green), var(--sky-deep)); width: 0%; z-index: 1000; transition: width 0.1s; }
+  .header { position: relative; z-index: 10; padding: 80px 40px 60px; max-width: 860px; margin: 0 auto; }
+  .header-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 300; letter-spacing: 0.25em; text-transform: uppercase; color: var(--may-green); margin-bottom: 20px; opacity: 0; animation: fadeUp 1s ease forwards 0.3s; }
+  h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 300; line-height: 1.05; color: var(--bark); margin-bottom: 8px; opacity: 0; animation: fadeUp 1s ease forwards 0.5s; }
+  h1 em { font-style: italic; color: var(--may-green); }
+  .header-sub { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 300; font-style: italic; color: var(--bark-light); margin-bottom: 32px; opacity: 0; animation: fadeUp 1s ease forwards 0.7s; }
+  .header-rule { display: flex; align-items: center; gap: 16px; opacity: 0; animation: fadeUp 1s ease forwards 0.9s; }
+  .header-rule-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--blossom-deep), var(--lichen)); }
+  .intro { position: relative; z-index: 10; max-width: 680px; margin: 0 auto 48px; padding: 0 40px; opacity: 0; animation: fadeUp 1s ease forwards 1.1s; }
+  .intro p { font-size: 1.1rem; font-weight: 300; color: var(--bark-light); font-style: italic; line-height: 1.85; }
+  .intro-meta { display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap; }
+  .meta-pill { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; padding: 6px 14px; border-radius: 20px; border: 1px solid; }
+  .pill-green { border-color: var(--may-light); color: var(--may-green); background: rgba(90,122,74,0.06); }
+  .pill-pink { border-color: var(--blossom-deep); color: var(--blossom-deep); background: rgba(201,150,138,0.06); }
+  .pill-blue { border-color: var(--sky-deep); color: var(--sky-deep); background: rgba(104,136,160,0.06); }
+  .pill-gold { border-color: #c8a030; color: #8a6010; background: rgba(200,160,48,0.06); }
+
+  /* Position diagram */
+  .position-diagram { margin: 0 40px 48px; max-width: 820px; position: relative; z-index: 10; opacity: 0; animation: fadeUp 1s ease forwards 1.3s; }
+  .diagram-inner { background: white; border-radius: 16px; padding: 28px 32px; border: 1px solid var(--lichen); box-shadow: 0 2px 20px rgba(74,56,40,0.06); }
+  .diagram-title { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--bark-light); margin-bottom: 20px; }
+  .diagram-grid { display: grid; grid-template-columns: 1fr 40px 1fr; gap: 16px; align-items: center; }
+  .diagram-hive { border-radius: 12px; padding: 18px 20px; text-align: center; }
+  .hive-ck { background: linear-gradient(135deg, var(--may-pale), #c8e0b0); border: 2px solid var(--may-light); }
+  .hive-sda { background: linear-gradient(135deg, var(--blossom), #e0c0b8); border: 2px solid var(--blossom-deep); }
+  .hive-emoji { font-size: 28px; display: block; margin-bottom: 8px; }
+  .hive-name { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 600; color: var(--bark); display: block; margin-bottom: 4px; }
+  .hive-status { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.15em; text-transform: uppercase; display: block; margin-bottom: 8px; }
+  .hive-ck .hive-status { color: var(--may-green); }
+  .hive-sda .hive-status { color: var(--blossom-deep); }
+  .hive-detail { font-size: 0.82rem; color: var(--bark-light); font-style: italic; line-height: 1.5; }
+  .diagram-arrow { text-align: center; font-size: 22px; color: var(--lichen); }
+  .diagram-labels { display: grid; grid-template-columns: 1fr 40px 1fr; gap: 16px; margin-top: 12px; }
+  .diagram-label { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.15em; text-transform: uppercase; text-align: center; padding: 4px 8px; border-radius: 4px; }
+  .label-original { background: rgba(90,122,74,0.1); color: var(--may-green); }
+  .label-new { background: rgba(201,150,138,0.1); color: var(--blossom-deep); }
+  .forager-note { margin-top: 16px; padding: 12px 16px; background: rgba(184,200,216,0.15); border-radius: 8px; border-left: 3px solid var(--sky-deep); font-size: 0.88rem; color: var(--bark-light); font-style: italic; }
+
+  /* Container */
+  .container { position: relative; z-index: 10; max-width: 860px; margin: 0 auto; padding: 0 24px 100px; }
+  .timeline-spine { position: relative; }
+  .timeline-spine::before { content: ''; position: absolute; left: 52px; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, var(--blossom), var(--lichen), var(--may-pale)); z-index: 0; }
+
+  .stage { position: relative; margin-bottom: 12px; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .stage.visible { opacity: 1; transform: translateY(0); }
+  .stage-header { display: flex; align-items: center; gap: 20px; cursor: pointer; padding: 20px 24px 20px 0; border-radius: 12px; transition: background 0.2s; position: relative; z-index: 1; user-select: none; }
+  .stage-header:hover { background: rgba(90,122,74,0.04); }
+  .stage-dot { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; position: relative; z-index: 2; transition: transform 0.3s ease; box-shadow: 0 2px 12px rgba(0,0,0,0.1); }
+  .stage-header:hover .stage-dot { transform: scale(1.08); }
+  .dot-inspection { background: linear-gradient(135deg, #d8e8c8, #b8d0a0); border: 1.5px solid var(--may-light); }
+  .dot-split { background: linear-gradient(135deg, #e8d5d0, #d0a898); border: 1.5px solid var(--blossom-deep); }
+  .dot-arrives { background: linear-gradient(135deg, #b8c8d8, #90b0c8); border: 1.5px solid var(--sky-deep); }
+  .dot-introduce { background: linear-gradient(135deg, #d8e8c8, #b8d0a0); border: 1.5px solid var(--may-light); }
+  .dot-check { background: linear-gradient(135deg, #f5f0d0, #e0d090); border: 1.5px solid #c8a840; }
+  .stage-title-group { flex: 1; }
+  .stage-date { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--bark-light); margin-bottom: 3px; }
+  .stage-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 500; color: var(--bark); line-height: 1.2; }
+  .stage-summary { font-size: 0.88rem; color: var(--bark-light); font-style: italic; margin-top: 2px; }
+  .stage-chevron { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--lichen); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s, border-color 0.2s; }
+  .stage-chevron svg { width: 12px; height: 12px; stroke: var(--bark-light); transition: stroke 0.2s; }
+  .stage.open .stage-chevron { transform: rotate(180deg); background: var(--may-green); border-color: var(--may-green); }
+  .stage.open .stage-chevron svg { stroke: white; }
+  .stage-body { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1); margin-left: 68px; }
+  .stage-body-inner { padding: 8px 0 32px 8px; border-left: 2px solid var(--may-pale); margin-left: 12px; padding-left: 28px; }
+
+  .actions { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+  .actions li { display: flex; gap: 14px; align-items: flex-start; padding: 10px 14px; border-radius: 8px; transition: background 0.2s; }
+  .actions li:hover { background: rgba(90,122,74,0.05); }
+  .action-check { width: 20px; height: 20px; border: 1.5px solid var(--lichen); border-radius: 5px; flex-shrink: 0; margin-top: 3px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; background: white; }
+  .action-check:hover { border-color: var(--may-green); background: var(--may-pale); }
+  .action-check.checked { background: var(--may-green); border-color: var(--may-green); }
+  .action-check.checked::after { content: '✓'; color: white; font-size: 11px; font-weight: 700; }
+  .actions li.done { opacity: 0.45; text-decoration: line-through; text-decoration-color: var(--may-green); }
+  .action-text { flex: 1; font-size: 0.97rem; line-height: 1.65; color: var(--bark); }
+
+  .evidence-toggle { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 10px 14px; border-radius: 8px; background: rgba(184,200,216,0.12); border: 1px solid rgba(184,200,216,0.3); transition: background 0.2s; user-select: none; }
+  .evidence-toggle:hover { background: rgba(184,200,216,0.22); }
+  .evidence-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sky-deep); flex: 1; }
+  .evidence-icon { font-size: 14px; transition: transform 0.3s ease; }
+  .evidence-toggle.open .evidence-icon { transform: rotate(180deg); }
+  .evidence-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+  .evidence-inner { padding: 16px 14px; background: rgba(184,200,216,0.07); border: 1px solid rgba(184,200,216,0.2); border-top: none; border-radius: 0 0 8px 8px; margin-bottom: 16px; }
+  .evidence-inner p { font-size: 0.9rem; color: var(--bark-light); line-height: 1.7; margin-bottom: 10px; }
+  .evidence-inner p:last-child { margin-bottom: 0; }
+  .source-tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.15em; text-transform: uppercase; padding: 2px 8px; border-radius: 10px; margin-right: 6px; margin-bottom: 4px; }
+  .tag-gpt { background: rgba(16,163,127,0.12); color: #0d7a60; border: 1px solid rgba(16,163,127,0.2); }
+  .tag-gpt5 { background: rgba(10,130,100,0.15); color: #0a6040; border: 1px solid rgba(10,130,100,0.25); }
+  .tag-gemini { background: rgba(66,133,244,0.1); color: #2255cc; border: 1px solid rgba(66,133,244,0.2); }
+  .tag-perplexity { background: rgba(32,145,197,0.1); color: #1066aa; border: 1px solid rgba(32,145,197,0.2); }
+  .tag-grok { background: rgba(120,100,180,0.1); color: #5044aa; border: 1px solid rgba(120,100,180,0.2); }
+  .tag-deepseek { background: rgba(200,80,60,0.1); color: #aa3322; border: 1px solid rgba(200,80,60,0.2); }
+  .tag-supplier { background: rgba(140,100,40,0.1); color: #7a5520; border: 1px solid rgba(140,100,40,0.2); }
+  .tag-consensus { background: rgba(90,122,74,0.12); color: var(--may-green); border: 1px solid rgba(90,122,74,0.25); }
+  .sources-line { margin-bottom: 10px; line-height: 2; }
+
+  .callout { border-radius: 8px; padding: 14px 18px; margin: 12px 0; font-size: 0.92rem; line-height: 1.65; display: flex; gap: 12px; align-items: flex-start; }
+  .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .callout-content { flex: 1; }
+  .callout-title { font-family: 'JetBrains Mono', monospace; font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 5px; }
+  .callout.warning { background: #fef8e7; border-left: 3px solid #c8a030; }
+  .callout.warning .callout-title { color: #956010; }
+  .callout.info { background: var(--may-pale); border-left: 3px solid var(--may-green); }
+  .callout.info .callout-title { color: var(--may-green); }
+  .callout.critical { background: #fef0ee; border-left: 3px solid var(--blossom-deep); }
+  .callout.critical .callout-title { color: #9a3828; }
+  .callout.sky { background: rgba(184,200,216,0.15); border-left: 3px solid var(--sky-deep); }
+  .callout.sky .callout-title { color: var(--sky-deep); }
+
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; font-weight: 500; font-style: italic; color: var(--bark-light); margin-bottom: 12px; margin-top: 20px; display: flex; align-items: center; gap: 10px; }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--lichen); }
+
+  .tracker { position: fixed; bottom: 28px; right: 28px; z-index: 100; background: white; border-radius: 40px; padding: 10px 18px; box-shadow: 0 4px 24px rgba(74,56,40,0.12); font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; color: var(--bark-light); display: flex; align-items: center; gap: 8px; }
+  .tracker-count { color: var(--may-green); }
+
+  footer { position: relative; z-index: 10; text-align: center; padding: 60px 40px; border-top: 1px solid var(--lichen); }
+  footer .bloom { font-size: 28px; display: block; margin-bottom: 12px; }
+  footer p { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.05rem; color: var(--bark-light); line-height: 1.8; }
+  footer .meta { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--may-green); margin-top: 16px; font-style: normal; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  strong { font-weight: 600; color: var(--bark); }
+  em { font-style: italic; color: var(--bark-light); }
+  code { font-family: 'JetBrains Mono', monospace; font-size: 0.82em; background: var(--may-pale); padding: 1px 6px; border-radius: 4px; color: var(--may-green); }
+
+  @media (max-width: 600px) {
+    .header { padding: 48px 24px 40px; }
+    .intro { padding: 0 24px; }
+    .position-diagram { margin: 0 24px 40px; }
+    .diagram-grid, .diagram-labels { grid-template-columns: 1fr; }
+    .diagram-arrow { transform: rotate(90deg); margin: 0 auto; }
+    .timeline-spine::before { left: 24px; }
+    .stage-body { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<header class="header">
+  <div class="header-eyebrow">South Acre · East Ayrshire · KA4 8NB · Version 2 — Final</div>
+  <h1>The Split Plan<br><em>May 2026</em></h1>
+  <p class="header-sub">Sir David Attenborough Hive × Carol Klein Hive — a documented plan for Ian & Pete</p>
+  <div class="header-rule">
+    <div class="header-rule-line"></div>
+    <span style="font-size:18px">🌸</span>
+    <div class="header-rule-line"></div>
+  </div>
+</header>
+
+<div class="intro">
+  <p>An overwintered Buckfast nucleus arrived mid-April 2026 and built to 11–12 frames of active brood by the first week of May. The colony is at swarm impulse threshold. This plan splits it into two strong colonies before it swarms — calibrated to East Ayrshire conditions and informed by eight independent AI models acting as experienced beekeepers at 55°N.</p>
+  <div class="intro-meta">
+    <span class="meta-pill pill-green">🐝 Buckfast Colony</span>
+    <span class="meta-pill pill-pink">🌸 May · East Ayrshire</span>
+    <span class="meta-pill pill-blue">📋 8-Model Consensus</span>
+    <span class="meta-pill pill-gold">✦ Version 2 · Revised</span>
+  </div>
+</div>
+
+<div class="position-diagram">
+  <div class="diagram-inner">
+    <div class="diagram-title">Hive Positions After The Split</div>
+    <div class="diagram-grid">
+      <div class="diagram-hive hive-ck">
+        <span class="hive-emoji">🐝</span>
+        <span class="hive-name">Carol Klein Hive</span>
+        <span class="hive-status">Queenless · Receives New Queen</span>
+        <span class="hive-detail">~5 frames · brood in all stages · nurse bees shaken in · entrance open</span>
+      </div>
+      <div class="diagram-arrow">⟷</div>
+      <div class="diagram-hive hive-sda">
+        <span class="hive-emoji">👑</span>
+        <span class="hive-name">Sir David Attenborough Hive</span>
+        <span class="hive-status">Queenright · Moved 50cm Right</span>
+        <span class="hive-detail">~6–7 frames · original marked queen · entrance grass-plugged for reorientation</span>
+      </div>
+    </div>
+    <div class="diagram-labels">
+      <div class="diagram-label label-original">← Original site · returning foragers land here</div>
+      <div></div>
+      <div class="diagram-label label-new">New position · 50cm right →</div>
+    </div>
+    <div class="forager-note">🐝 Foragers navigate by GPS coordinates, not box appearance. All returning bees fly back to the original site and walk into Carol Klein — giving the queenless half a full foraging workforce from day one. Sir David's grass plug forces his bees to reorient to their new position over 24–48 hours rather than streaming back to the original site.</div>
+  </div>
+</div>
+
+<div class="container">
+<div class="timeline-spine">
+
+  <!-- STAGE 1 -->
+  <div class="stage">
+    <div class="stage-header" onclick="toggleStage(this)">
+      <div class="stage-dot dot-inspection">🔍</div>
+      <div class="stage-title-group">
+        <div class="stage-date">Saturday 9th May 2026</div>
+        <div class="stage-title">Pre-Split Inspection</div>
+        <div class="stage-summary">Confirm readiness · check for queen cells · mark the queen</div>
+      </div>
+      <div class="stage-chevron"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    </div>
+    <div class="stage-body">
+      <div class="stage-body-inner">
+        <div class="callout critical">
+          <div class="callout-icon">⚡</div>
+          <div class="callout-content">
+            <div class="callout-title">If You Find Capped Queen Cells Today</div>
+            Do not wait until Thursday. Split immediately. A colony at this strength can swarm before May 14th if the weather opens and capped cells are already present. Adapt the rest of this plan from today's date.
+          </div>
+        </div>
+        <div class="section-title">Actions</div>
+        <ul class="actions">
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Suit on, smoker lit. Wait for above 14°C, dry, calm conditions</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Full inspection — work methodically frame by frame, both sides of each frame</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Count active brood frames — 10+ needed before proceeding to split</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text"><strong>Check every frame for queen cells.</strong> Polished cups only: note and proceed. Charged cups with larvae: proceed, accelerate. Capped cells: split today.</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text"><strong>Find and mark the queen</strong> if not already marked. 2026 = white. A marked queen makes Thursday's split far less error-prone. Dab on thorax only, allow to dry before replacing frame.</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Look for <strong>polished cells</strong> in the centre of the brood nest — a positive sign of queen activity and readiness to lay</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Assess stores on each frame — note which frames have capped honey for the split allocation</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Write up the inspection record before removing the suit</div></li>
+        </ul>
+        <div class="evidence-toggle" onclick="toggleEvidence(this)">
+          <div class="evidence-label">📖 Evidence & reasoning</div>
+          <div class="evidence-icon">▾</div>
+        </div>
+        <div class="evidence-body">
+          <div class="evidence-inner">
+            <div class="sources-line"><span class="source-tag tag-gpt5">GPT final review</span><span class="source-tag tag-consensus">All 8 models</span><span class="source-tag tag-gemini">Gemini</span></div>
+            <p>All eight models agreed that 11–12 frames of active brood in early May at 55°N puts the colony at or near swarm impulse. The Saturday inspection is the decision point that determines whether the Thursday timeline holds or needs to accelerate.</p>
+            <p>The final GPT review was the sharpest on this: <em>"A colony at your described strength can throw a swarm before the 14th if weather opens. If you find capped swarm cells on Saturday, I would seriously consider splitting immediately rather than waiting nearly a week."</em></p>
+            <p>Gemini introduced the polished cells observation: cells cleaned and prepared for laying are a positive indicator of a productive queen working methodically through the brood nest.</p>
+            <p>Marking the queen: GPT final review — <em>"Mark the original queen if she is not already marked. A split without a marked queen becomes much more error-prone."</em></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGE 2 -->
+  <div class="stage">
+    <div class="stage-header" onclick="toggleStage(this)">
+      <div class="stage-dot dot-split">✂️</div>
+      <div class="stage-title-group">
+        <div class="stage-date">Thursday 14th May 2026</div>
+        <div class="stage-title">Split Day</div>
+        <div class="stage-summary">Move Sir David right first · Carol Klein takes original site · divide the colony 55/45</div>
+      </div>
+      <div class="stage-chevron"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    </div>
+    <div class="stage-body">
+      <div class="stage-body-inner">
+        <div class="callout sky">
+          <div class="callout-icon">📍</div>
+          <div class="callout-content">
+            <div class="callout-title">The Logic of Position</div>
+            Foragers navigate by GPS coordinates, not by box colour or appearance. All returning bees fly back to the original site. Carol Klein sits there waiting and gets a full foraging workforce from day one — exactly what a queenless colony needs during her most vulnerable period. Sir David moves with the queen and reorientates to his new position via the grass plug over 24–48 hours.
+          </div>
+        </div>
+        <div class="section-title">Before you open anything</div>
+        <ul class="actions">
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Carol Klein Hive <strong>already assembled and positioned on the original site</strong> before you start — floor, brood box, feeder with cooled 1:1 syrup, roof. Do not move it once split begins.</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Sir David's new stand ready <strong>50cm to the right</strong>, stable and level</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Both hives have distinct visual markers — different shape and colour, painted and dry well before today</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Fresh grass to hand for Sir David's entrance plug</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Suit on, smoker lit and producing cool white smoke before you approach</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Roles agreed before opening: Ian on frames, Pete on records and equipment</div></li>
+        </ul>
+        <div class="section-title">The split sequence — follow this order exactly</div>
+        <ul class="actions">
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text"><strong>Step 1 — Move Sir David's box first.</strong> Lift the entire assembled Sir David hive (floor, brood box, roof together) to his new stand 50cm right. Do this before opening anything — Carol Klein's empty box is already on the original site waiting.</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text"><strong>Step 2 — Plug Sir David's entrance</strong> loosely with fresh grass immediately. Forces his bees to push out slowly over 24–48 hours and reorient to the new position rather than returning to the original site.</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text"><strong>Step 3 — Open Sir David.</strong> Find the marked queen. Note which frame she is on. Do not remove her.</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text"><strong>Step 4 — Build the split.</strong> Remove ~5 frames from Sir David for Carol Klein: brood in all stages (eggs AND young larvae essential), stores, pollen. Sir David keeps ~6–7 frames including the queen's frame. Approximately 55/45.</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text"><strong>Step 5 — Shake extra nurse bees</strong> from Sir David frames into Carol Klein before sealing. Compensates for the nurse bees she'll lose to drift in the first 24 hours.</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text"><strong>Step 6 — Seal Carol Klein.</strong> Dummy board tight against last frame. Entrance on smallest setting — open, no plug. Roof on.</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text"><strong>Step 7 — Close Sir David.</strong> Entrance reduced to minimum behind the grass plug. Roof on. Hive strap on. Walk away.</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Angle entrances very slightly differently — even a few degrees helps long-term drift reduction</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Write up the split record — frames moved, queen confirmed, time, weather, any queen cells seen</div></li>
+        </ul>
+        <div class="callout warning">
+          <div class="callout-icon">🚫</div>
+          <div class="callout-content">
+            <div class="callout-title">Do Not Feed Carol Klein Today</div>
+            With a May flow on, feeding the queenless split risks triggering robbing from Sir David. Carol Klein has stores on her frames. Leave her until after queen introduction on Saturday.
+          </div>
+        </div>
+        <div class="evidence-toggle" onclick="toggleEvidence(this)">
+          <div class="evidence-label">📖 Evidence & reasoning — position, mechanics, and the grass plug</div>
+          <div class="evidence-icon">▾</div>
+        </div>
+        <div class="evidence-body">
+          <div class="evidence-inner">
+            <div class="sources-line"><span class="source-tag tag-gpt5">GPT final review</span><span class="source-tag tag-gpt">GPT</span><span class="source-tag tag-gemini">Gemini</span><span class="source-tag tag-perplexity">Perplexity</span><span class="source-tag tag-grok">Grok</span></div>
+            <p><strong>Carol Klein on original site (revised from V1):</strong> The final GPT review reconsidered the queen position question: <em>"leaving the queenright half on the original stand weakens the queenless unit at exactly the point it most needs workforce and thermoregulation... most experienced beekeepers still bias flight bees toward the queenless half."</em> GPT, Gemini, and Perplexity all supported this position across multiple rounds of consultation.</p>
+            <p><strong>Move Sir David first:</strong> Moving Sir David's box before opening any frames ensures Carol Klein's empty box is already on the original site when foragers start returning mid-split. They walk straight in without confusion.</p>
+            <p><strong>Grass plug on Sir David:</strong> Grok's recommendation, widely used in same-apiary splits. Forces the moved colony to reorient to the new position rather than streaming back. The plug goes on the moved colony (Sir David), not the colony receiving the foragers (Carol Klein).</p>
+            <p><strong>55/45 not 60/40:</strong> Revised from V1 based on GPT final review — <em>"Five frames can become surprisingly thin after drift."</em> 55/45 gives Carol Klein more resilience while Sir David remains robust at the original productivity level.</p>
+            <p><strong>Physical move sequence:</strong> Moving Sir David first means Carol Klein's position is established before any foragers return — the returning bees find a hive already in place on the original site and enter it naturally.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGE 3 -->
+  <div class="stage">
+    <div class="stage-header" onclick="toggleStage(this)">
+      <div class="stage-dot dot-arrives">📬</div>
+      <div class="stage-title-group">
+        <div class="stage-date">Friday 15th May 2026</div>
+        <div class="stage-title">Queen Arrives</div>
+        <div class="stage-summary">BMH F1 Buckfast — receive, check, keep safe overnight</div>
+      </div>
+      <div class="stage-chevron"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    </div>
+    <div class="stage-body">
+      <div class="stage-body-inner">
+        <div class="callout info">
+          <div class="callout-icon">👑</div>
+          <div class="callout-content">
+            <div class="callout-title">The Queen</div>
+            BMH F1 Buckfast Mated Queen — hand selected by Laurence Edwards, APHA and NBU inspected, full health certificate, UK mated. Dispatched Thursday 14th May, arrives Friday 15th May via Royal Mail Special Delivery. Signature required on arrival.
+          </div>
+        </div>
+        <div class="section-title">On arrival</div>
+        <ul class="actions">
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Sign for the package. Open outer packaging carefully.</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Check the queen is alive and moving through the cage mesh</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Check attendant bees in the cage are alive</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Dab a small amount of 1:1 sugar syrup on the outside of the cage mesh to feed attendants</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Store in a cool, dark, undisturbed drawer indoors — away from draughts and strong smells</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text"><strong>Do not open the cage under any circumstances</strong></div></li>
+        </ul>
+        <div class="callout warning">
+          <div class="callout-icon">📮</div>
+          <div class="callout-content">
+            <div class="callout-title">If Delivery is Delayed to Saturday</div>
+            The queenless period extends to 48 hours — still within the safe window. Introduce Saturday afternoon instead of morning. If delayed to Monday or beyond, contact Black Mountain Honey before doing anything.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGE 4 -->
+  <div class="stage">
+    <div class="stage-header" onclick="toggleStage(this)">
+      <div class="stage-dot dot-introduce">👑</div>
+      <div class="stage-title-group">
+        <div class="stage-date">Saturday 16th May 2026</div>
+        <div class="stage-title">Destroy Cells · Introduce Queen</div>
+        <div class="stage-summary">48hrs queenless · destroy every cell · cage introduction · expose candy immediately</div>
+      </div>
+      <div class="stage-chevron"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    </div>
+    <div class="stage-body">
+      <div class="stage-body-inner">
+        <div class="callout critical">
+          <div class="callout-icon">⚡</div>
+          <div class="callout-content">
+            <div class="callout-title">The Most Important Step in the Entire Plan</div>
+            Every single queen cell in Carol Klein must be found and destroyed before the queen enters the hive. One missed cell means a virgin queen will emerge and kill the introduced queen the moment she is released. Shake bees off every frame. See the wax surface clearly. Check every frame. Then check again.
+          </div>
+        </div>
+        <div class="section-title">Destroying queen cells — Carol Klein only</div>
+        <ul class="actions">
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Suit on, smoker lit — use smoke lightly. Queenless colonies can be defensive; heavy smoke causes confusion.</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Open Carol Klein Hive. Work methodically frame by frame.</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text"><strong>Shake bees off each frame</strong> — you must see the wax surface, not through a layer of bees</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Destroy every queen cell without exception — open cups with larvae, capped cells, any peanut-shaped structure on frame bottoms or sides. Use hive tool or finger. Every single one.</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Replace each frame in order as you check it</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">When all frames checked — confirm no queen cells remain. Colony is now hopelessly queenless.</div></li>
+        </ul>
+        <div class="section-title">Introducing the queen</div>
+        <ul class="actions">
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Retrieve queen cage from indoor storage. Confirm she is alive and moving.</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Identify the two most central brood frames — nurse bees here are most receptive</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Place the cage between the two frames, <strong>candy end slightly downward</strong> — prevents dead attendants from blocking the exit</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Mesh side facing outward so bees can tend to her through the mesh</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text"><strong>Remove the fondant tab now and expose the candy immediately.</strong> Do not wait until Monday. The bees begin eating through it straight away.</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Close the hive. Reduce entrance to minimum. <strong>Do not open again until Saturday 23rd.</strong></div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Write up the record — time, weather, queen cells destroyed (how many), queen introduced, candy exposed</div></li>
+        </ul>
+        <div class="callout info">
+          <div class="callout-icon">🤫</div>
+          <div class="callout-content">
+            <div class="callout-title">Walk Away and Don't Come Back Until Saturday</div>
+            Most queen losses after introduction come from human interference. The bees are doing something complex and chemical. Leave them entirely undisturbed. The next time you open Carol Klein is Saturday 23rd — not before, not for a quick look.
+          </div>
+        </div>
+        <div class="evidence-toggle" onclick="toggleEvidence(this)">
+          <div class="evidence-label">📖 Evidence & reasoning — introduction method revised from V1</div>
+          <div class="evidence-icon">▾</div>
+        </div>
+        <div class="evidence-body">
+          <div class="evidence-inner">
+            <div class="sources-line"><span class="source-tag tag-gpt5">GPT final review</span><span class="source-tag tag-consensus">4-model consensus</span><span class="source-tag tag-supplier">Supplier</span></div>
+            <p><strong>Expose candy immediately — revised from V1:</strong> The original plan kept the tab in place for 48 hours, then exposed candy on Monday. The final GPT review identified this unnecessarily prolonged the queenless period. GPT's calculation: split Thursday, cage Saturday, candy Monday, release potentially Wednesday — too long. Revised: expose candy immediately on Saturday. GPT: <em>"Cleaner. Less manipulation. Less prolonged queenlessness."</em></p>
+            <p><strong>Destroy every cell:</strong> The supplier, GPT, and Perplexity all emphasise this without exception. GPT: <em>"especially in a very strong colony. Shake bees off frames. Don't just glance."</em> One missed capped cell means a virgin queen emerges and kills the introduced queen on release.</p>
+            <p><strong>Don't over-interpret cage behaviour:</strong> Final GPT review: <em>"inexperienced observers often misread normal investigative behaviour as aggression."</em> If queenless 48 hours and all cells removed, acceptance odds are already good. Don't second-guess through the mesh.</p>
+            <p><strong>Walk away:</strong> All eight models and the supplier agree — repeated early inspections are the second most common cause of rejection after missed queen cells. The instruction is absolute.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGE 5 -->
+  <div class="stage">
+    <div class="stage-header" onclick="toggleStage(this)">
+      <div class="stage-dot dot-check">🥚</div>
+      <div class="stage-title-group">
+        <div class="stage-date">Saturday 23rd May 2026</div>
+        <div class="stage-title">First Post-Introduction Check</div>
+        <div class="stage-summary">Look for eggs · check both hives · monitor the June gap</div>
+      </div>
+      <div class="stage-chevron"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+    </div>
+    <div class="stage-body">
+      <div class="stage-body-inner">
+        <div class="callout info">
+          <div class="callout-icon">🥚</div>
+          <div class="callout-content">
+            <div class="callout-title">What You're Looking For</div>
+            Eggs — not the queen. Eggs confirm she has been released, accepted, and is laying. Tiny, upright, in the base of cells like grains of rice. Good light, sun over your shoulder, loupe if needed. You do not need to see the queen herself.
+          </div>
+        </div>
+        <div class="section-title">Carol Klein Hive inspection</div>
+        <ul class="actions">
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Suit on, smoker lit. Above 14°C, dry, calm — wait for the right window</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Remove the empty queen cage. Note whether candy was fully eaten.</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text"><strong>Look for eggs on the central brood frames</strong> — take your time, work methodically</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Destroy any queen cells present — remove every one still visible</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Assess frame coverage — are bees occupying more frames than at split?</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Check stores — feed 1:1 syrup if light, especially if June gap conditions are developing</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Write up the record — eggs seen or not, frames covered, behaviour, any cells found</div></li>
+        </ul>
+        <div class="section-title">Sir David Attenborough Hive inspection</div>
+        <ul class="actions">
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Full inspection while suited up — swarm cells, brood pattern, stores</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">A split reduces but does not eliminate swarm pressure. Maintain 7-day inspection cycles through June for both hives.</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Add a super to Sir David if approaching 7–8 frames covered solidly</div></li>
+          <li><div class="action-check" onclick="toggleCheck(this)"></div><div class="action-text">Confirm grass plug has gone — should have been pushed out within 48 hours of split day</div></li>
+        </ul>
+        <div class="callout warning">
+          <div class="callout-icon">🔍</div>
+          <div class="callout-content">
+            <div class="callout-title">If No Eggs Seen</div>
+            Don't panic. The supplier notes it can take 2–3 weeks for a caged queen to return to full lay after introduction stress. Wait another full week before reassessing. Only after 3 weeks with no eggs should you consider failure and contact Black Mountain Honey.
+          </div>
+        </div>
+        <div class="callout warning">
+          <div class="callout-icon">🌧️</div>
+          <div class="callout-content">
+            <div class="callout-title">The June Gap — East Ayrshire</div>
+            Three models flagged a potential late-May/early-June nectar dearth between spring blossom (sycamore, hawthorn) and summer flow (clover, willowherb). In Scotland this transition can be abrupt. A split colony with a smaller foraging force and larvae to feed is vulnerable. Monitor stores in both hives weekly and be ready to feed 1:1 syrup to Carol Klein if foraging activity drops.
+          </div>
+        </div>
+        <div class="evidence-toggle" onclick="toggleEvidence(this)">
+          <div class="evidence-label">📖 Evidence & reasoning — post-introduction monitoring</div>
+          <div class="evidence-icon">▾</div>
+        </div>
+        <div class="evidence-body">
+          <div class="evidence-inner">
+            <div class="sources-line"><span class="source-tag tag-consensus">All 8 models</span><span class="source-tag tag-supplier">Supplier</span><span class="source-tag tag-gemini">Gemini final review</span></div>
+            <p>All eight models recommended checking for eggs rather than the queen as primary confirmation. The supplier: <em>"It can take 2–3 weeks for mated queens to come back into lay following being caged."</em></p>
+            <p><strong>Swarm vigilance continues:</strong> GPT final review — <em>"Keep inspecting the queenright colony weekly without fail. Splitting reduces swarm pressure; it does not reliably eliminate it in explosive Buckfast colonies."</em></p>
+            <p><strong>June gap:</strong> Gemini and GPT both flagged this. Gemini: <em>"A split colony has half the foraging force but still has a massive amount of hungry larvae to feed."</em> The split's smaller population makes it more vulnerable to a sudden forage interruption.</p>
+            <p><strong>Long-term note (GPT):</strong> Both hives are now Buckfast lines. If either proves swarm-prone in South Acre's landscape, the trait is duplicated. Keep detailed notes through June and July on temperament, swarm impulse, and brood patterns across both hives. This is the beginning of a multi-year resilience record for the apiary.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div class="tracker" id="tracker">
+  <span>🌸</span>
+  <span id="trackerText" class="tracker-count">Loading...</span>
+</div>
+
+<footer>
+  <span class="bloom">🌿</span>
+  <p>The Sir David Attenborough Hive and the Carol Klein Hive.<br>
+  <em>An apiary made with intention, in East Ayrshire, in May.</em></p>
+  <p class="meta">South Acre · Ian & Pete · Version 2 · Spring 2026</p>
+</footer>
+
+<script>
+  window.addEventListener('scroll', () => {
+    const d = document.documentElement;
+    document.getElementById('progressBar').style.width = (window.scrollY / (d.scrollHeight - window.innerHeight) * 100) + '%';
+  });
+
+  function toggleStage(header) {
+    const stage = header.parentElement;
+    const body = stage.querySelector('.stage-body');
+    const isOpen = stage.classList.contains('open');
+    stage.classList.toggle('open', !isOpen);
+    body.style.maxHeight = isOpen ? '0' : (body.scrollHeight + 5000) + 'px';
+    if (!isOpen) setTimeout(() => { body.style.maxHeight = (body.scrollHeight + 5000) + 'px'; }, 100);
+  }
+
+  function toggleEvidence(toggle) {
+    const body = toggle.nextElementSibling;
+    const isOpen = toggle.classList.contains('open');
+    toggle.classList.toggle('open', !isOpen);
+    body.style.maxHeight = isOpen ? '0' : (body.scrollHeight + 500) + 'px';
+    const stageBody = toggle.closest('.stage-body');
+    if (stageBody && !isOpen) setTimeout(() => { stageBody.style.maxHeight = (stageBody.scrollHeight + 5000) + 'px'; }, 50);
+  }
+
+  function toggleCheck(box) {
+    const li = box.parentElement;
+    box.classList.toggle('checked');
+    li.classList.toggle('done', box.classList.contains('checked'));
+    updateTracker();
+  }
+
+  function updateTracker() {
+    const total = document.querySelectorAll('.action-check').length;
+    const done = document.querySelectorAll('.action-check.checked').length;
+    const el = document.getElementById('trackerText');
+    if (done === 0) el.textContent = `${total} tasks`;
+    else if (done === total) el.textContent = `All ${total} done 🎉`;
+    else el.textContent = `${done} / ${total}`;
+  }
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.stage').forEach(s => observer.observe(s));
+
+  const firstHeader = document.querySelector('.stage-header');
+  if (firstHeader) toggleStage(firstHeader);
+  updateTracker();
+</script>
+</body>
+</html>
