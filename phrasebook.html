@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phrasebook · Ian, Pete & Echo · June 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,800;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c4a55a;
+    --gold-light: #d4b870;
+    --gold-pale: #e8d9b0;
+    --gold-faint: #f0eadb;
+    --paper: #f2ede4;
+    --paper-dark: #e5ddd0;
+    --ink: #1a1814;
+    --ink-mid: #3a3428;
+    --ink-soft: #6a5e4a;
+    --nl-accent: #2a4a7a;   /* Dutch blue */
+    --be-accent: #7a2020;   /* Belgian red */
+    --fr-accent: #1a3a5a;   /* French navy */
+    --note-bg: #f5f0e8;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.65;
+  }
+
+  /* ── PAPER TEXTURE ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    position: relative;
+    z-index: 1;
+    padding: 64px 40px 48px;
+    text-align: center;
+    border-bottom: 1px solid var(--gold-pale);
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent 0%, var(--gold) 30%, var(--gold-light) 50%, var(--gold) 70%, transparent 100%);
+  }
+
+  .header-rule {
+    width: 48px;
+    height: 1px;
+    background: var(--gold);
+    margin: 0 auto 20px;
+  }
+
+  .header-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 18px;
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+
+  .header h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .header-sub {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--ink-soft);
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  /* ── STICKY NAV ── */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(242, 237, 228, 0.97);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--gold-pale);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+
+  .nav-inner {
+    display: flex;
+    min-width: max-content;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .nav a {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding: 14px 18px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    white-space: nowrap;
+  }
+  .nav a:hover { color: var(--gold); border-bottom-color: var(--gold-pale); }
+  .nav a.nl { border-top: 3px solid var(--nl-accent); }
+  .nav a.be { border-top: 3px solid var(--be-accent); }
+  .nav a.fr { border-top: 3px solid var(--fr-accent); }
+
+  /* ── MAIN ── */
+  .main {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 56px 32px 100px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── LANGUAGE SECTION ── */
+  .lang-section {
+    margin-bottom: 72px;
+    scroll-margin-top: 56px;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  .lang-section:nth-child(1) { animation-delay: 0.1s; }
+  .lang-section:nth-child(2) { animation-delay: 0.2s; }
+  .lang-section:nth-child(3) { animation-delay: 0.3s; }
+  .lang-section:nth-child(4) { animation-delay: 0.4s; }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .lang-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--gold-pale);
+  }
+
+  .lang-flag {
+    font-size: 2rem;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .lang-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .lang-eyebrow.nl { color: var(--nl-accent); }
+  .lang-eyebrow.be { color: var(--be-accent); }
+  .lang-eyebrow.fr { color: var(--fr-accent); }
+
+  .lang-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--ink);
+  }
+
+  .lang-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .lang-note {
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+
+  /* ── GHENT LANGUAGE NOTE ── */
+  .ghent-note {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 24px 28px;
+    margin-bottom: 28px;
+    border-left: 3px solid var(--gold);
+  }
+
+  .ghent-note strong {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .ghent-note p {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: rgba(242, 237, 228, 0.85);
+  }
+
+  /* ── CATEGORY ── */
+  .category {
+    margin: 32px 0 16px;
+  }
+
+  .category-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--paper);
+    display: inline-block;
+    padding: 4px 10px 3px;
+    margin-bottom: 16px;
+  }
+
+  .category-label.nl { background: var(--nl-accent); }
+  .category-label.be { background: var(--be-accent); }
+  .category-label.fr { background: var(--fr-accent); }
+  .category-label.shared { background: var(--ink-soft); }
+  .category-label.echo { background: #4a6a40; }
+
+  /* ── PHRASE CARD ── */
+  .phrase-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--paper-dark);
+    padding: 16px 0;
+    align-items: start;
+  }
+
+  .phrase-card:last-child { border-bottom: none; }
+
+  .phrase-context {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 5px;
+    grid-column: 1 / -1;
+  }
+
+  .phrase-native {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--ink);
+    padding-right: 20px;
+    line-height: 1.3;
+  }
+
+  .phrase-right {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .phrase-phonetic {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+    line-height: 1.4;
+  }
+
+  .phrase-english {
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  .phrase-note {
+    grid-column: 1 / -1;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    margin-top: 6px;
+    padding: 8px 12px;
+    background: var(--gold-faint);
+    border-left: 2px solid var(--gold-pale);
+    line-height: 1.5;
+  }
+
+  /* ── PHONETIC KEY ── */
+  .phonetic-key {
+    background: var(--paper-dark);
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    font-size: 0.88rem;
+  }
+
+  .phonetic-key strong {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .phonetic-key ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 4px 20px;
+  }
+
+  .phonetic-key li {
+    color: var(--ink-mid);
+    line-height: 1.5;
+  }
+
+  .phonetic-key li span {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    margin-right: 6px;
+  }
+
+  /* ── DIVIDER ── */
+  .ornament {
+    text-align: center;
+    color: var(--gold-pale);
+    font-size: 1rem;
+    letter-spacing: 0.5em;
+    margin: 56px 0 48px;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 32px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold-pale);
+    border-top: 1px solid var(--gold-pale);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 580px) {
+    .main { padding: 40px 18px 80px; }
+    .phrase-card { grid-template-columns: 1fr; }
+    .phrase-native { padding-right: 0; margin-bottom: 8px; }
+    .header { padding: 48px 20px 36px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-rule"></div>
+  <div class="header-eyebrow">Ian · Pete · Echo · June 2026</div>
+  <h1>Not Aiming for Fluency.<br><em>Just Not Being a Dick.</em></h1>
+  <p class="header-sub">A working phrasebook. Real situations, useful words, honest phonetics. Three languages, one dog, no tourist traps.</p>
+</header>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#dutch" class="nl">🇳🇱 Dutch</a>
+    <a href="#ghent" class="be">🇧🇪 Ghent</a>
+    <a href="#french" class="fr">🇫🇷 French</a>
+    <a href="#echo">🐾 Echo</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- ══════════════════════════════════════
+       DUTCH — NETHERLANDS
+  ══════════════════════════════════════ -->
+  <section class="lang-section" id="dutch">
+    <div class="lang-header">
+      <div class="lang-flag">🇳🇱</div>
+      <div>
+        <div class="lang-eyebrow nl">Netherlands · Haarlem · Zierikzee · IJmuiden</div>
+        <h2 class="lang-title">Dutch.<br><em>They'll switch to English instantly. Open in Dutch anyway.</em></h2>
+        <p class="lang-note">Almost everyone under 60 in the Netherlands speaks excellent English. The point of trying Dutch isn't communication — it's acknowledgement. A sentence or two in Dutch, then let them switch if they want. They will.</p>
+      </div>
+    </div>
+
+    <div class="phonetic-key">
+      <strong>Dutch pronunciation notes</strong>
+      <ul>
+        <li><span>g / ch</span> guttural throat sound, like clearing your throat softly — "gh"</li>
+        <li><span>ij / ei</span> sounds like "eye" — rhymes with "my"</li>
+        <li><span>oe</span> sounds like "oo" in "moon"</li>
+        <li><span>ui</span> roughly "ow" but rounder — like "uh-ee" run together</li>
+        <li><span>eu</span> like the French "eu" — round lips, say "uh"</li>
+        <li><span>r</span> slightly rolled or guttural depending on region</li>
+        <li><span>v</span> often sounds more like "f" in Dutch</li>
+      </ul>
+    </div>
+
+    <!-- BASICS -->
+    <div class="category">
+      <div class="category-label nl">Basics</div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Greeting / any time of day</div>
+        <div class="phrase-native">Goedemorgen / Goedemiddag / Goedenavond</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">GHOO-duh-MOR-ghun / GHOO-duh-MID-dagh / GHOO-duh-AH-font</div>
+          <div class="phrase-english">Good morning / afternoon / evening</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Casual hello — works all day</div>
+        <div class="phrase-native">Hoi / Hallo</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">hoy / HAH-loh</div>
+          <div class="phrase-english">Hi / Hello — completely normal to use</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Please / Thank you / You're welcome</div>
+        <div class="phrase-native">Alstublieft / Dank u wel / Graag gedaan</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">al-stuh-BLEEFT / DANK ew vel / GHRAAKH ghuh-DAHN</div>
+          <div class="phrase-english">Please (formal) / Thank you / You're welcome</div>
+        </div>
+        <div class="phrase-note">Casual thank you: <em>Bedankt</em> (buh-DANKT) — very common, perfectly friendly.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Goodbye</div>
+        <div class="phrase-native">Doei / Tot ziens</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">DOO-ee / tot ZEENS</div>
+          <div class="phrase-english">Bye (casual) / Goodbye (a bit more formal)</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Do you speak English?</div>
+        <div class="phrase-native">Spreekt u Engels?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">SPREYKT ew ENG-uls</div>
+          <div class="phrase-english">— you'll almost never need to finish the sentence</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Sorry / Excuse me</div>
+        <div class="phrase-native">Sorry / Pardon</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">SOR-ee / par-DON</div>
+          <div class="phrase-english">Both used freely, both understood</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EATING & DRINKING -->
+    <div class="category">
+      <div class="category-label nl">Eating & Drinking</div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Arriving at a café or restaurant</div>
+        <div class="phrase-native">Een tafel voor twee, alstublieft</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">eyn TAH-fel for TVAY, al-stuh-BLEEFT</div>
+          <div class="phrase-english">A table for two, please</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Ordering drinks</div>
+        <div class="phrase-native">Twee bier, alstublieft / Een glas wijn</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">TVAY beer / eyn GHLAS vayn</div>
+          <div class="phrase-english">Two beers please / A glass of wine</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">At the Jopenkerk — asking about a beer</div>
+        <div class="phrase-native">Wat raadt u aan?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">vat RAHT ew ahn</div>
+          <div class="phrase-english">What do you recommend?</div>
+        </div>
+        <div class="phrase-note">Works in any bar. Dutch bartenders enjoy this question. Expect a genuine answer.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Asking for the bill</div>
+        <div class="phrase-native">De rekening, alstublieft</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">duh REY-kun-ing, al-stuh-BLEEFT</div>
+          <div class="phrase-english">The bill, please</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Paying — keeping it simple</div>
+        <div class="phrase-native">Kan ik pinnen? / Heeft u contant?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">kan ik PIN-un / heyft ew kon-TANT</div>
+          <div class="phrase-english">Can I pay by card? / Do you take cash?</div>
+        </div>
+        <div class="phrase-note">The Netherlands is very card-friendly. <em>Pinnen</em> = paying by debit card — universally understood.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">It was delicious</div>
+        <div class="phrase-native">Het was heerlijk</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">het vas HEYR-luk</div>
+          <div class="phrase-english">It was delicious — earns genuine pleasure</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SHOPPING -->
+    <div class="category">
+      <div class="category-label nl">Cheese Shop / Market</div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Asking to taste something</div>
+        <div class="phrase-native">Mag ik proeven?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">makh ik PROO-fun</div>
+          <div class="phrase-english">May I taste? — expected in any kaaswinkel</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Asking for aged Gouda</div>
+        <div class="phrase-native">Heeft u een oude Gouda? Met kristallen?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">heyft ew un OW-duh GOW-dah / met kris-TAL-un</div>
+          <div class="phrase-english">Do you have an aged Gouda? With crystals?</div>
+        </div>
+        <div class="phrase-note">Mentioning <em>kristallen</em> (crystals) immediately signals you know what you're after. They will like you.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Asking them to vacuum pack it</div>
+        <div class="phrase-native">Kunt u het vacuüm verpakken?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">kunt ew het VAH-kew-um fur-PAK-kun</div>
+          <div class="phrase-english">Can you vacuum pack it?</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">How much is it?</div>
+        <div class="phrase-native">Hoeveel kost het?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">HOO-feyl kost het</div>
+          <div class="phrase-english">How much does it cost?</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHARMACY -->
+    <div class="category">
+      <div class="category-label nl">Pharmacy</div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Entering an apotheek</div>
+        <div class="phrase-native">Heeft u diclofenac gel zonder recept?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">heyft ew dee-kloh-FEY-nak GHEL ZON-dur ruh-SEPT</div>
+          <div class="phrase-english">Do you have diclofenac gel without prescription?</div>
+        </div>
+        <div class="phrase-note">They do, and they'll point you straight to it. No drama.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Asking for something bigger</div>
+        <div class="phrase-native">Heeft u een grotere tube?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">heyft ew un GHROH-tur-uh TOO-buh</div>
+          <div class="phrase-english">Do you have a larger tube?</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ornament">· · ·</div>
+
+  <!-- ══════════════════════════════════════
+       GHENT — LANGUAGE NOTE + DUTCH/FRENCH
+  ══════════════════════════════════════ -->
+  <section class="lang-section" id="ghent">
+    <div class="lang-header">
+      <div class="lang-flag">🇧🇪</div>
+      <div>
+        <div class="lang-eyebrow be">Belgium · Ghent · Patershol · Graslei</div>
+        <h2 class="lang-title">Ghent.<br><em>Dutch first. Always Dutch first.</em></h2>
+        <p class="lang-note">Ghent is a Flemish city. The language is Dutch. Most people under 50 speak excellent English. French is understood but slightly grates — a bit like speaking English to a Welsh speaker in Cardiff. Open in Dutch, let them switch if they want, and you're golden.</p>
+      </div>
+    </div>
+
+    <div class="ghent-note">
+      <strong>The language rule for Ghent</strong>
+      <p>Lead with Dutch. Even broken Dutch, even just <em>Goedemiddag</em> and a smile. Ghentenaars appreciate it. If you open in French, you'll get served fine but you've placed yourself as someone who didn't bother to look up where they were. If you open in English directly, that's also fine — but Dutch first is better. They will switch to English themselves within one exchange, and that switch is a gift they're choosing to give you.</p>
+    </div>
+
+    <!-- GHENT SPECIFICS -->
+    <div class="category">
+      <div class="category-label be">At the Tierenteyn shop</div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Asking for the mustard</div>
+        <div class="phrase-native">Een potje mosterd, alstublieft</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">eyn POT-yuh MOS-tert, al-stuh-BLEEFT</div>
+          <div class="phrase-english">A small pot of mustard, please</div>
+        </div>
+        <div class="phrase-note">The staff at Tierenteyn are used to people who've come specifically for the mustard. Just point at the jar if needed. They'll ladle it for you.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Asking for a cold pack</div>
+        <div class="phrase-native">Heeft u een koudepakket?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">heyft ew un KOW-duh-pak-et</div>
+          <div class="phrase-english">Do you have a cold pack? (for the journey)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="category">
+      <div class="category-label be">Beer shop / Trappist hunting</div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Asking about Trappist beers</div>
+        <div class="phrase-native">Heeft u Tilquin gueuze?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">heyft ew TIL-kwan GHER-zuh</div>
+          <div class="phrase-english">Do you have Tilquin gueuze?</div>
+        </div>
+        <div class="phrase-note"><em>Gueuze</em> is pronounced with that soft Belgian gh — roughly "GHER-zuh." Don't say "gwee-zuh." The person behind the counter will wince.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Browsing — what do you recommend?</div>
+        <div class="phrase-native">Wat raadt u aan voor lokale bieren?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">vat RAHT ew ahn for loh-KAH-luh BEE-run</div>
+          <div class="phrase-english">What do you recommend for local beers?</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="category">
+      <div class="category-label be">Restaurants — Patershol</div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Opening a conversation</div>
+        <div class="phrase-native">Goedenavond. Een tafel voor twee?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">GHOO-duh-AH-font. eyn TAH-fel for TVAY</div>
+          <div class="phrase-english">Good evening. A table for two?</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Asking about the waterzooi</div>
+        <div class="phrase-native">Is de waterzooi met kip of vis?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">is duh VAH-ter-zoy met kip of vis</div>
+          <div class="phrase-english">Is the waterzooi with chicken or fish?</div>
+        </div>
+        <div class="phrase-note"><em>Waterzooi</em> = VAH-ter-zoy. Ghent's own stew — chicken or fish, cream broth, vegetables. Asking this question in Dutch will delight anyone who hears it.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Complimenting the food</div>
+        <div class="phrase-native">Het was uitstekend. Dank u wel.</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">het vas OWT-stey-kunt. DANK ew vel</div>
+          <div class="phrase-english">It was excellent. Thank you very much.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="category">
+      <div class="category-label be">Ghent phrases — when French is appropriate</div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Note on when to use French in Ghent</div>
+        <div class="phrase-native">—</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">—</div>
+          <div class="phrase-english">—</div>
+        </div>
+        <div class="phrase-note">In Ghent: almost never lead with French. The exception is if someone addresses you in French first — then respond in French. At Cité Europe and in Montreuil, flip to French as your default. In between (Saint-Omer, Clairmarais) French is home ground and expected.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ornament">· · ·</div>
+
+  <!-- ══════════════════════════════════════
+       FRENCH
+  ══════════════════════════════════════ -->
+  <section class="lang-section" id="french">
+    <div class="lang-header">
+      <div class="lang-flag">🇫🇷</div>
+      <div>
+        <div class="lang-eyebrow fr">France · Saint-Omer · Montreuil · Calais</div>
+        <h2 class="lang-title">French.<br><em>The effort is the point.</em></h2>
+        <p class="lang-note">Northern French locals are not the Paris stereotype. They're generally warm to people who make an attempt. You won't be fluent — that's not the goal. The goal is the first sentence in French before they switch. They usually will.</p>
+      </div>
+    </div>
+
+    <div class="phonetic-key">
+      <strong>French pronunciation notes</strong>
+      <ul>
+        <li><span>r</span> guttural — from the back of the throat</li>
+        <li><span>u</span> round your lips and say "ee" — no English equivalent, write as "ew"</span></li>
+        <li><span>eu</span> like "uh" with rounded lips — as in <em>peur</em></li>
+        <li><span>on / an / en</span> nasal vowels — don't pronounce the n, nasalise the vowel</li>
+        <li><span>silent endings</span> final consonants usually silent: <em>vous</em> = "voo", <em>est</em> = "ay"</li>
+        <li><span>liaison</span> when a word ends in consonant + next starts with vowel, run them together</li>
+      </ul>
+    </div>
+
+    <!-- BASICS -->
+    <div class="category">
+      <div class="category-label fr">Basics</div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">The essential opener — always say this first</div>
+        <div class="phrase-native">Bonjour / Bonsoir</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">bon-ZHOOR / bon-SWAHR</div>
+          <div class="phrase-english">Good day (morning/afternoon) / Good evening</div>
+        </div>
+        <div class="phrase-note">In France, not saying <em>Bonjour</em> before anything else is mildly rude. Walk into any shop, any pharmacy, any market stall — say Bonjour first. Always. It takes one second and changes everything.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Please / Thank you / You're welcome</div>
+        <div class="phrase-native">S'il vous plaît / Merci / De rien</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">seel voo PLAY / mair-SEE / duh ree-AN</div>
+          <div class="phrase-english">Please / Thank you / You're welcome</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Excuse me / Sorry</div>
+        <div class="phrase-native">Excusez-moi / Pardon</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">ex-kew-zay MWAH / par-DON</div>
+          <div class="phrase-english">Excuse me / Sorry — both very useful</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Do you speak English? — said apologetically</div>
+        <div class="phrase-native">Parlez-vous anglais? Mon français est très limité.</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">par-lay voo on-GLAY / mon fron-SAY ay tray lee-mee-TAY</div>
+          <div class="phrase-english">Do you speak English? My French is very limited.</div>
+        </div>
+        <div class="phrase-note">The second sentence is the difference between a tourist demand and a genuine apology. Use it. Northern French people respond well to this.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Goodbye</div>
+        <div class="phrase-native">Au revoir / Bonne journée</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">oh ruh-VWAHR / bon zhoor-NAY</div>
+          <div class="phrase-english">Goodbye / Have a good day</div>
+        </div>
+        <div class="phrase-note"><em>Bonne journée</em> on leaving a shop is warm and normal. They'll say it back. Small exchange, good feeling.</div>
+      </div>
+    </div>
+
+    <!-- EATING -->
+    <div class="category">
+      <div class="category-label fr">Eating & Drinking</div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Arriving at a restaurant</div>
+        <div class="phrase-native">Bonjour. Une table pour deux, s'il vous plaît.</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">bon-ZHOOR. ewn TAH-bluh poor duh, seel voo PLAY</div>
+          <div class="phrase-english">Hello. A table for two, please.</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Ordering</div>
+        <div class="phrase-native">Je voudrais… / Nous voudrions…</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">zhuh voo-DRAY / noo voo-dree-ON</div>
+          <div class="phrase-english">I would like… / We would like…</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">What do you recommend?</div>
+        <div class="phrase-native">Qu'est-ce que vous recommandez?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">kess-kuh voo ruh-kom-on-DAY</div>
+          <div class="phrase-english">What do you recommend?</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Local wine — asking for something regional</div>
+        <div class="phrase-native">Avez-vous un vin de la région?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">ah-vay voo un van duh lah ray-zhee-ON</div>
+          <div class="phrase-english">Do you have a wine from the region?</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Asking for the bill</div>
+        <div class="phrase-native">L'addition, s'il vous plaît</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">lah-dee-see-ON, seel voo PLAY</div>
+          <div class="phrase-english">The bill, please</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">It was excellent</div>
+        <div class="phrase-native">C'était excellent. Merci beaucoup.</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">say-TAY ex-say-LON. mair-SEE boh-KOO</div>
+          <div class="phrase-english">It was excellent. Thank you very much.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MARKET / CHEESE -->
+    <div class="category">
+      <div class="category-label fr">Market & Cheese</div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Asking to taste something</div>
+        <div class="phrase-native">Je peux goûter?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">zhuh puh goo-TAY</div>
+          <div class="phrase-english">May I taste? — entirely expected at any cheese or charcuterie stall</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Asking about the Maroilles</div>
+        <div class="phrase-native">C'est affiné depuis combien de temps?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">say ah-fee-NAY duh-PWEE kom-bee-AN duh TON</div>
+          <div class="phrase-english">How long has it been aged?</div>
+        </div>
+        <div class="phrase-note">Asking this about a Maroilles will generate a genuine and enthusiastic response. Affinage (ageing) is a point of pride. You'll learn something.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">At the boulangerie</div>
+        <div class="phrase-native">Un gâteau battu, s'il vous plaît</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">un gah-TOH bah-TEW, seel voo PLAY</div>
+          <div class="phrase-english">A gâteau battu, please — the Picardy brioche cake</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">How much is it?</div>
+        <div class="phrase-native">C'est combien?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">say kom-bee-AN</div>
+          <div class="phrase-english">How much is it? — short, widely understood</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHARMACY -->
+    <div class="category">
+      <div class="category-label fr">Pharmacy</div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Asking for Biafine</div>
+        <div class="phrase-native">Bonjour. Avez-vous de la Biafine?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">bon-ZHOOR. ah-vay voo duh lah bee-ah-FEEN</div>
+          <div class="phrase-english">Good morning. Do you have Biafine?</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Asking for diclofenac</div>
+        <div class="phrase-native">Du Voltarène en gel, sans ordonnance?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">dew vol-tah-REN on ZHEL, son or-do-NANS</div>
+          <div class="phrase-english">Voltaren gel, without a prescription?</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Asking for Spasfon</div>
+        <div class="phrase-native">Du Spasfon, s'il vous plaît</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">dew spa-SFON, seel voo PLAY</div>
+          <div class="phrase-english">Spasfon, please — they'll know exactly what it is</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PETROL / DRIVING -->
+    <div class="category">
+      <div class="category-label fr">Driving & Petrol</div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">At a petrol station</div>
+        <div class="phrase-native">Le plein, s'il vous plaît / Sans plomb</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">luh PLAN, seel voo PLAY / son PLON</div>
+          <div class="phrase-english">Fill it up, please / Unleaded</div>
+        </div>
+        <div class="phrase-note">The Hyundai takes unleaded — <em>sans plomb</em> (literally "without lead"). Most French forecourts are self-service now so you may not need to say anything.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Asking for directions</div>
+        <div class="phrase-native">Excusez-moi — où est…?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">ex-kew-zay MWAH — oo ay</div>
+          <div class="phrase-english">Excuse me — where is…?</div>
+        </div>
+        <div class="phrase-note">You have GPS. But if you need it: <em>à gauche</em> (ah GOHSH) = left, <em>à droite</em> (ah DRWAHT) = right, <em>tout droit</em> (too DRWAH) = straight ahead.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ornament">· · ·</div>
+
+  <!-- ══════════════════════════════════════
+       ECHO — DOG PHRASES ACROSS ALL THREE
+  ══════════════════════════════════════ -->
+  <section class="lang-section" id="echo">
+    <div class="lang-header">
+      <div class="lang-flag">🐾</div>
+      <div>
+        <div class="lang-eyebrow" style="color:#4a6a40;">All three countries</div>
+        <h2 class="lang-title">Echo.<br><em>For when she's the conversation.</em></h2>
+        <p class="lang-note">Echo will attract attention everywhere. People will ask about her, want to greet her, comment on her. Having a few phrases ready makes these exchanges warmer and faster. She won't mind either way.</p>
+      </div>
+    </div>
+
+    <div class="category">
+      <div class="category-label echo">Dutch · Echo phrases</div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Someone asks if they can pet her</div>
+        <div class="phrase-native">Ja, ze is vriendelijk / Ze heet Echo</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">yah, zuh is FREEN-duh-luk / zuh heyt EH-koh</div>
+          <div class="phrase-english">Yes, she's friendly / Her name is Echo</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Asking if dogs are allowed</div>
+        <div class="phrase-native">Zijn honden welkom?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">zayn HON-dun VEL-kom</div>
+          <div class="phrase-english">Are dogs welcome? — the single most useful phrase on the trip</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Asking if there's water for her</div>
+        <div class="phrase-native">Heeft u water voor mijn hond?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">heyft ew VAH-ter for mayn HOND</div>
+          <div class="phrase-english">Do you have water for my dog?</div>
+        </div>
+        <div class="phrase-note">Dog-friendly Dutch and Belgian terraces often have bowls already. But asking this question tends to make staff bring biscuits as well.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">If someone's nervous around her</div>
+        <div class="phrase-native">Ze doet geen kwaad</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">zuh doot gheyn kwaht</div>
+          <div class="phrase-english">She won't hurt anyone — literally "she does no harm"</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="category">
+      <div class="category-label echo">French · Echo phrases</div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Asking if dogs are allowed</div>
+        <div class="phrase-native">Les chiens sont acceptés ici?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">lay shee-AN son ak-sep-TAY ee-SEE</div>
+          <div class="phrase-english">Are dogs accepted here?</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Someone admires her</div>
+        <div class="phrase-native">Elle s'appelle Echo. Elle est très sage.</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">el sah-PEL EH-koh. el ay tray SAZH</div>
+          <div class="phrase-english">She's called Echo. She's very well-behaved.</div>
+        </div>
+        <div class="phrase-note"><em>Sage</em> (SAZH) = well-behaved, wise, calm. The best compliment a French person gives a dog. Use it proactively and they'll believe you.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Asking for water for her</div>
+        <div class="phrase-native">De l'eau pour mon chien, s'il vous plaît?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">duh LOH poor mon shee-AN, seel voo PLAY</div>
+          <div class="phrase-english">Some water for my dog, please?</div>
+        </div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">If someone's nervous or asks you to keep her away</div>
+        <div class="phrase-native">Pas de problème — je la tiens.</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">pah duh pro-BLEM — zhuh lah tee-AN</div>
+          <div class="phrase-english">No problem — I'll hold her.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="category">
+      <div class="category-label echo">At the vet — Haarlem · 10 June</div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Arriving at Dierenkliniek Kenaupark</div>
+        <div class="phrase-native">Ik heb een afspraak voor mijn hond.</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">ik hep eyn AF-spraak for mayn hond</div>
+          <div class="phrase-english">I have an appointment for my dog.</div>
+        </div>
+        <div class="phrase-note">The vet in Haarlem will certainly speak English. But starting in Dutch is a good instinct. Say you're there for the tapeworm treatment: <em>de ontwormingspil</em> (duh ont-VOR-mings-pil) — the deworming tablet.</div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-context">Asking for the certificate</div>
+        <div class="phrase-native">Heeft u een bewijs voor de grensovergang?</div>
+        <div class="phrase-right">
+          <div class="phrase-phonetic">heyft ew eyn buh-VAYS for duh GRENS-oh-fer-ghang</div>
+          <div class="phrase-english">Do you have a certificate for the border crossing?</div>
+        </div>
+        <div class="phrase-note">They'll know exactly what you need and will provide it. The tapeworm treatment must be documented for UK re-entry — they deal with this every day.</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  Ian · Pete · Echo · June 2026 &nbsp;·&nbsp; Three Countries · One Dog · Not Aiming for Fluency
+</footer>
+
+<script>
+  // Highlight active section in nav
+  const sections = document.querySelectorAll('.lang-section[id]');
+  const navLinks = document.querySelectorAll('.nav a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.style.color = '');
+        navLinks.forEach(a => a.style.borderBottomColor = '');
+        const match = document.querySelector(`.nav a[href="#${entry.target.id}"]`);
+        if (match) {
+          match.style.color = 'var(--gold)';
+          match.style.borderBottomColor = 'var(--gold)';
+          match.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+      }
+    });
+  }, { rootMargin: '-10% 0px -65% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
